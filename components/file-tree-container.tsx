@@ -1,6 +1,13 @@
 "use client";
-import React from "react";
-import FileTreeItem from "./file-tree-item";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "./ui/resizable";
+import { Expand, File, Folder, Minus, X } from "lucide-react";
+import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
 
 export type Node = {
   name: string;
@@ -8,6 +15,10 @@ export type Node = {
 };
 
 const nodes: Node[] = [
+  {
+    name: "Recents",
+    nodes: [],
+  },
   {
     name: "Home",
     nodes: [
@@ -54,16 +65,113 @@ const nodes: Node[] = [
       { name: "passwords.txt" },
     ],
   },
+  {
+    name: "Desktop",
+    nodes: [],
+  },
 ];
 
 export default function FileTreeContainer() {
+  const [selectedNodes, setSelectedNodes] = useState<Node>();
+  const [leftPanelWidth, setLeftPanelWidth] = useState<number>(0);
+  const leftPanelRef = useRef<HTMLDivElement | null>(null);
+  const handlePrimaryNodeClick = (node: Node) => {
+    setSelectedNodes(node);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (leftPanelRef.current) {
+        setLeftPanelWidth(leftPanelRef.current.offsetWidth);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Set initial width
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (leftPanelRef.current) {
+      const observer = new ResizeObserver(() => {
+        setLeftPanelWidth(leftPanelRef.current!.offsetWidth);
+      });
+
+      observer.observe(leftPanelRef.current);
+
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, []);
+
   return (
-    <div>
-      <ul>
-        {nodes.map((node) => (
-          <FileTreeItem key={node.name} node={node} />
-        ))}
-      </ul>
-    </div>
+    <ResizablePanelGroup
+      direction="horizontal"
+      className="min-h-[500px] max-w-2xl rounded-lg border"
+    >
+      <ResizablePanel defaultSize={30}>
+        <div className="flex h-full flex-col p-3">
+          <div className="mb-4 flex items-center gap-x-1">
+            <Button size={"xsm"} variant={"destructive"}>
+              <X className="size-[14px]" />
+            </Button>
+            <Button size={"xsm"} variant={"warning"}>
+              <Minus className="size-[14px]" />
+            </Button>
+            <Button size={"xsm"} variant={"success"}>
+              <Expand className="size-[14px]" />
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground">Favorites</p>
+          <ul>
+            {nodes.map((node) => (
+              <li
+                className={cn(
+                  "cursor-pointer hover:bg-neutral-300/30 transition-all rounded-lg px-2 py-1 text-[15px]",
+                  selectedNodes?.name === node.name && "bg-neutral-300/30"
+                )}
+                key={node.name}
+                onClick={() => handlePrimaryNodeClick(node)}
+              >
+                {node.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel defaultSize={70}>
+        <div ref={leftPanelRef} className="flex h-full flex-col p-6">
+          {selectedNodes?.nodes && selectedNodes?.nodes?.length > 0 ? (
+            <ul className="">
+              {selectedNodes?.nodes?.map((node) => (
+                <li key={node.name}>
+                  <span className="flex items-center flex-col gap-1">
+                    {node.nodes ? (
+                      <Folder className="size-12 fill-blue-400" />
+                    ) : (
+                      <File className="size-12 fill-gray-200" />
+                    )}
+                    {node.name}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : selectedNodes?.name ? (
+            <div className="h-full w-full flex justify-center items-center">
+              <p className="text-muted-foreground">No folder found</p>
+            </div>
+          ) : (
+            <div className="h-full w-full flex justify-center items-center">
+              <p className="text-muted-foreground">Select a folder</p>
+            </div>
+          )}
+        </div>
+      </ResizablePanel>
+    </ResizablePanelGroup>
   );
 }
