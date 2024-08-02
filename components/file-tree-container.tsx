@@ -124,14 +124,17 @@ export default function FileTreeContainer() {
       <ResizablePanel defaultSize={30}>
         <div className="flex h-full flex-col p-3">
           <div className="mb-4 flex items-center gap-x-1">
-            <Button size={"xsm"} variant={"destructive"}>
-              <X className="size-[14px]" />
+            <Button size={"xsm"} variant={"destructive"} className="group">
+              <X className="size-[14px] hidden group-hover:block" />
+              <div className="size-[14px] block group-hover:hidden" />
             </Button>
-            <Button size={"xsm"} variant={"warning"}>
-              <Minus className="size-[14px]" />
+            <Button size={"xsm"} variant={"warning"} className="group">
+              <Minus className="size-[14px] hidden group-hover:block" />
+              <div className="size-[14px] block group-hover:hidden" />
             </Button>
-            <Button size={"xsm"} variant={"success"}>
-              <Expand className="size-[14px]" />
+            <Button size={"xsm"} variant={"success"} className="group">
+              <Expand className="size-[14px] hidden group-hover:block" />
+              <div className="size-[14px] block group-hover:hidden" />
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">Favorites</p>
