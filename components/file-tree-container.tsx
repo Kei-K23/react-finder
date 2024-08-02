@@ -81,7 +81,8 @@ const nodes: Node[] = [
 ];
 
 export default function FileTreeContainer() {
-  const [history, setHistory] = useState<Node[]>([]);
+  const [backHistory, setBackHistory] = useState<Node[]>([]);
+  const [forwardHistory, setForwardHistory] = useState<Node[]>([]);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
   const leftPanelRef = useRef<HTMLDivElement | null>(null);
   const { width } = UseResizeWidth(leftPanelRef);
@@ -90,17 +91,29 @@ export default function FileTreeContainer() {
     if (!node.nodes) {
       return;
     }
-    setHistory((prevHistory) => [...prevHistory, selectedNode!]);
+    setBackHistory((prevHistory) => [...prevHistory, selectedNode!]);
+    setForwardHistory([]);
     setSelectedNode(node);
   };
 
   const handlePrevClick = () => {
-    if (history.length === 0) {
+    if (backHistory.length === 0) {
       return;
     }
-    const prevNode = history[history.length - 1];
-    setHistory((prevHistory) => prevHistory.slice(0, -1));
+    const prevNode = backHistory[backHistory.length - 1];
+    setBackHistory((prevHistory) => prevHistory.slice(0, -1));
+    setForwardHistory((prevHistory) => [selectedNode!, ...prevHistory]);
     setSelectedNode(prevNode);
+  };
+
+  const handleNextClick = () => {
+    if (forwardHistory.length === 0) {
+      return;
+    }
+    const nextNode = forwardHistory[0];
+    setForwardHistory((prevHistory) => prevHistory.slice(1));
+    setBackHistory((prevHistory) => [...prevHistory, selectedNode!]);
+    setSelectedNode(nextNode);
   };
 
   return (
@@ -146,7 +159,7 @@ export default function FileTreeContainer() {
               <Button
                 variant={"ghost"}
                 size={"xs"}
-                disabled={history.length === 0}
+                disabled={backHistory.length === 0}
                 onClick={handlePrevClick}
               >
                 <ChevronLeft />
@@ -154,7 +167,8 @@ export default function FileTreeContainer() {
               <Button
                 variant={"ghost"}
                 size={"xs"}
-                disabled={!selectedNode?.name}
+                disabled={forwardHistory.length === 0}
+                onClick={handleNextClick}
               >
                 <ChevronRight />
               </Button>
