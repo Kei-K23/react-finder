@@ -1,11 +1,19 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "./ui/resizable";
-import { Expand, File, Folder, Minus, X } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Expand,
+  File,
+  Folder,
+  Minus,
+  X,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import UseResizeWidth from "@/hooks/use-resize-width";
@@ -73,12 +81,26 @@ const nodes: Node[] = [
 ];
 
 export default function FileTreeContainer() {
-  const [selectedNodes, setSelectedNodes] = useState<Node>();
-
+  const [history, setHistory] = useState<Node[]>([]);
+  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
   const leftPanelRef = useRef<HTMLDivElement | null>(null);
   const { width } = UseResizeWidth(leftPanelRef);
-  const handlePrimaryNodeClick = (node: Node) => {
-    setSelectedNodes(node);
+
+  const handleNodeClick = (node: Node) => {
+    if (!node.nodes) {
+      return;
+    }
+    setHistory((prevHistory) => [...prevHistory, selectedNode!]);
+    setSelectedNode(node);
+  };
+
+  const handlePrevClick = () => {
+    if (history.length === 0) {
+      return;
+    }
+    const prevNode = history[history.length - 1];
+    setHistory((prevHistory) => prevHistory.slice(0, -1));
+    setSelectedNode(prevNode);
   };
 
   return (
@@ -105,10 +127,10 @@ export default function FileTreeContainer() {
               <li
                 className={cn(
                   "cursor-pointer hover:bg-neutral-300/30 transition-all rounded-lg px-2 py-1 text-[15px]",
-                  selectedNodes?.name === node.name && "bg-neutral-300/30"
+                  selectedNode?.name === node.name && "bg-neutral-300/30"
                 )}
                 key={node.name}
-                onClick={() => handlePrimaryNodeClick(node)}
+                onClick={() => handleNodeClick(node)}
               >
                 {node.name}
               </li>
@@ -118,23 +140,46 @@ export default function FileTreeContainer() {
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={70}>
-        <div ref={leftPanelRef} className="flex h-full flex-col p-6">
-          {selectedNodes?.nodes && selectedNodes?.nodes?.length > 0 ? (
-            <ul className="">
-              {selectedNodes?.nodes?.map((node) => (
-                <li key={node.name}>
-                  <span className="flex items-center flex-col gap-1">
+        <div ref={leftPanelRef} className="flex h-full flex-col ">
+          <div className="flex items-center w-full h-12 bg-gray-200 mb-4 px-4 py-2">
+            <div className="flex items-center">
+              <Button
+                variant={"ghost"}
+                size={"xs"}
+                disabled={history.length === 0}
+                onClick={handlePrevClick}
+              >
+                <ChevronLeft />
+              </Button>
+              <Button
+                variant={"ghost"}
+                size={"xs"}
+                disabled={!selectedNode?.name}
+              >
+                <ChevronRight />
+              </Button>
+              <span className="ml-1 text-sm font-extrabold">
+                {selectedNode?.name}
+              </span>
+            </div>
+          </div>
+
+          {selectedNode?.nodes && selectedNode?.nodes?.length > 0 ? (
+            <ul className="grid grid-cols-4 gap-3">
+              {selectedNode?.nodes?.map((node) => (
+                <li key={node.name} onClick={() => handleNodeClick(node)}>
+                  <div className="flex items-center flex-col gap-1">
                     {node.nodes ? (
-                      <Folder className="size-12 fill-blue-400" />
+                      <Folder className="size-10 fill-blue-400" />
                     ) : (
-                      <File className="size-12 fill-gray-200" />
+                      <File className="size-10 fill-gray-200" />
                     )}
-                    {node.name}
-                  </span>
+                    <span className=" text-wrap ">{node.name}</span>
+                  </div>
                 </li>
               ))}
             </ul>
-          ) : selectedNodes?.name ? (
+          ) : selectedNode?.name ? (
             <div className="h-full w-full flex justify-center items-center">
               <p className="text-muted-foreground">No folder found</p>
             </div>
