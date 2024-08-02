@@ -8,6 +8,7 @@ import {
 import { Expand, File, Folder, Minus, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
+import UseResizeWidth from "@/hooks/use-resize-width";
 
 export type Node = {
   name: string;
@@ -73,40 +74,12 @@ const nodes: Node[] = [
 
 export default function FileTreeContainer() {
   const [selectedNodes, setSelectedNodes] = useState<Node>();
-  const [leftPanelWidth, setLeftPanelWidth] = useState<number>(0);
+
   const leftPanelRef = useRef<HTMLDivElement | null>(null);
+  const { width } = UseResizeWidth(leftPanelRef);
   const handlePrimaryNodeClick = (node: Node) => {
     setSelectedNodes(node);
   };
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (leftPanelRef.current) {
-        setLeftPanelWidth(leftPanelRef.current.offsetWidth);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    handleResize(); // Set initial width
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (leftPanelRef.current) {
-      const observer = new ResizeObserver(() => {
-        setLeftPanelWidth(leftPanelRef.current!.offsetWidth);
-      });
-
-      observer.observe(leftPanelRef.current);
-
-      return () => {
-        observer.disconnect();
-      };
-    }
-  }, []);
 
   return (
     <ResizablePanelGroup
