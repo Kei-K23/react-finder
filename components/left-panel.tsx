@@ -18,7 +18,7 @@ export default function LeftPanel({
     <div className="flex h-full flex-col p-3">
       <WindowActionsContainer />
       <p className="text-xs text-muted-foreground">Favorites</p>
-      <ul>
+      <ul className="select-none">
         {nodes.map((node) => (
           <LeftPanelNodeItem
             key={node.name}

@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import {
   ResizableHandle,
@@ -8,7 +7,7 @@ import {
 
 import { Node } from "@/type";
 import LeftPanel from "./left-panel";
-import RightPanel from "./rightPanel";
+import RightPanel from "./right-panel";
 
 const nodes: Node[] = [
   {
@@ -67,7 +66,13 @@ const nodes: Node[] = [
   },
 ];
 
-export default function FileTreeContainer() {
+type FileTreeContainerProps = {
+  handleMouseDown: (e: React.MouseEvent) => void;
+};
+
+export default function FileTreeContainer({
+  handleMouseDown,
+}: FileTreeContainerProps) {
   const [backHistory, setBackHistory] = useState<Node[]>([]);
   const [forwardHistory, setForwardHistory] = useState<Node[]>([]);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
@@ -122,6 +127,7 @@ export default function FileTreeContainer() {
           handlePrevClick={handlePrevClick}
           backHistory={backHistory}
           forwardHistory={forwardHistory}
+          handleMouseDown={handleMouseDown}
         />
       </ResizablePanel>
     </ResizablePanelGroup>

@@ -19,7 +19,7 @@ export default function RightPanelNodeItem({
         ) : (
           <File className="size-10 fill-gray-200" />
         )}
-        <span className=" text-wrap ">{node.name}</span>
+        <span className=" text-wrap text-[14px]">{node.name}</span>
       </div>
     </li>
   );

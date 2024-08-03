@@ -11,6 +11,7 @@ type RightPanelProps = {
   forwardHistory: Node[];
   handlePrevClick: () => void;
   handleNextClick: () => void;
+  handleMouseDown: (e: React.MouseEvent) => void;
 };
 
 export default function RightPanel({
@@ -20,13 +21,15 @@ export default function RightPanel({
   forwardHistory,
   handlePrevClick,
   handleNextClick,
+  handleMouseDown,
 }: RightPanelProps) {
   const rightPanelRef = useRef<HTMLDivElement | null>(null);
   const { width } = UseResizeWidth(rightPanelRef);
 
   return (
-    <div ref={rightPanelRef} className="flex h-full flex-col ">
+    <div ref={rightPanelRef} className="flex h-full flex-col bg-gray-300">
       <RightPanelActionBar
+        handleMouseDown={handleMouseDown}
         selectedNode={selectedNode}
         handleNextClick={handleNextClick}
         handlePrevClick={handlePrevClick}
