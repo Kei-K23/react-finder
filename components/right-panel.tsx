@@ -1,4 +1,3 @@
-import UseResizeWidth from "@/hooks/use-resize-width";
 import React, { useRef } from "react";
 import { Node } from "@/type";
 import RightPanelActionBar from "./right-panel-action-bar";
@@ -24,7 +23,6 @@ export default function RightPanel({
   handleMouseDown,
 }: RightPanelProps) {
   const rightPanelRef = useRef<HTMLDivElement | null>(null);
-  const { width } = UseResizeWidth(rightPanelRef);
 
   return (
     <div ref={rightPanelRef} className="flex h-full flex-col bg-gray-300">

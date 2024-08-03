@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-export default function UseResizeWidth<T>(
+export default function useWidthChange<T>(
   refEle: React.MutableRefObject<HTMLDivElement | null>
 ) {
   const [width, setWidth] = useState<number>(0);

@@ -105,11 +105,8 @@ export default function Finder({ handleMouseDown }: FinderProps) {
   };
 
   return (
-    <ResizablePanelGroup
-      direction="horizontal"
-      className="min-h-[500px] max-w-2xl rounded-lg border"
-    >
-      <ResizablePanel defaultSize={30}>
+    <ResizablePanelGroup direction="horizontal" className="rounded-lg border">
+      <ResizablePanel defaultSize={20}>
         <LeftPanel
           nodes={nodes}
           selectedNode={selectedNode}
@@ -118,7 +115,7 @@ export default function Finder({ handleMouseDown }: FinderProps) {
         />
       </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={70}>
+      <ResizablePanel defaultSize={80}>
         <RightPanel
           selectedNode={selectedNode}
           handleNodeClick={handleNodeClick}
