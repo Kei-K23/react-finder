@@ -137,7 +137,10 @@ export default function Finder({
   };
 
   return (
-    <ResizablePanelGroup direction="horizontal" className="rounded-lg border">
+    <ResizablePanelGroup
+      direction="horizontal"
+      className="rounded-lg border border-gray-500"
+    >
       <ResizablePanel defaultSize={20}>
         <LeftPanel
           nodes={nodes}

@@ -28,14 +28,14 @@ export default function LeftPanel({
   setSize,
 }: LeftPanelProps) {
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex flex-col h-full w-full bg-gray-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-50 ">
       <WindowActionsContainer
         handleMouseDown={handleMouseDown}
         mainLayoutRef={mainLayoutRef}
         containerRef={containerRef}
         setSize={setSize}
       />
-      <p className="text-xs text-muted-foreground p-2">Favorites</p>
+      <p className="text-xs text-neutral-300 p-2">Favorites</p>
       <ul className="select-none p-2">
         {nodes.map((node) => (
           <LeftPanelNodeItem

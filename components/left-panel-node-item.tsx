@@ -16,7 +16,7 @@ export default function LeftPanelNodeItem({
   return (
     <li
       className={cn(
-        "cursor-pointer hover:bg-neutral-300/30 transition-all rounded-lg px-2 py-1 text-[15px]",
+        "cursor-pointer hover:bg-neutral-300/30 transition-all rounded-lg px-2 py-1 text-[15px] text-neutral-100",
         selectedNode?.name === node.name && "bg-neutral-300/30"
       )}
       key={node?.name}

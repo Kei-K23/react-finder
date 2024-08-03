@@ -6,6 +6,7 @@ import useDraggable from "@/hooks/use-draggable";
 import useResizeWidthAndHeight from "@/hooks/use-resize-width-and-height";
 import { cn } from "@/lib/utils";
 import { useFinderState } from "@/store/use-finder-state";
+import Image from "next/image";
 import { useRef } from "react";
 
 export default function Home() {
@@ -25,6 +26,11 @@ export default function Home() {
       ref={mainLayoutRef}
       className="flex min-h-screen flex-col items-center justify-center overflow-hidden"
     >
+      <img
+        src={"/wallpaper_1.jpg"}
+        alt="wallpaper image"
+        className="w-full h-full absolute object-cover"
+      />
       {isFinderOpen && (
         <div
           ref={containerRef}
