@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import WindowActionsContainer from "./window-actions-container";
 import { Node } from "@/type";
 import LeftPanelNodeItem from "./left-panel-node-item";
@@ -8,6 +8,14 @@ type LeftPanelProps = {
   selectedNode: Node | null;
   handleNodeClick: (node: Node) => void;
   handleMouseDown: (e: React.MouseEvent) => void;
+  mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
+  containerRef: React.MutableRefObject<HTMLDivElement | null>;
+  setSize: Dispatch<
+    SetStateAction<{
+      width: number;
+      height: number;
+    }>
+  >;
 };
 
 export default function LeftPanel({
@@ -15,10 +23,18 @@ export default function LeftPanel({
   selectedNode,
   handleNodeClick,
   handleMouseDown,
+  mainLayoutRef,
+  containerRef,
+  setSize,
 }: LeftPanelProps) {
   return (
     <div className="flex h-full flex-col">
-      <WindowActionsContainer handleMouseDown={handleMouseDown} />
+      <WindowActionsContainer
+        handleMouseDown={handleMouseDown}
+        mainLayoutRef={mainLayoutRef}
+        containerRef={containerRef}
+        setSize={setSize}
+      />
       <p className="text-xs text-muted-foreground p-2">Favorites</p>
       <ul className="select-none p-2">
         {nodes.map((node) => (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -8,11 +8,17 @@ import {
 import { Node } from "@/type";
 import LeftPanel from "./left-panel";
 import RightPanel from "./right-panel";
+import useResizeWidthAndHeight from "@/hooks/use-resize-width-and-height";
 
 const nodes: Node[] = [
   {
     name: "Recents",
-    nodes: [],
+    nodes: [
+      {
+        name: "ScreenShort",
+        nodes: [],
+      },
+    ],
   },
   {
     name: "Home",
@@ -53,24 +59,50 @@ const nodes: Node[] = [
         ],
       },
       { name: "Pictures", nodes: [] },
+      { name: "Codes", nodes: [] },
+      { name: "Projects", nodes: [] },
+      { name: "Games", nodes: [] },
+      { name: "Notes", nodes: [] },
+      { name: "Test", nodes: [] },
+      { name: "Homeworks", nodes: [] },
       {
         name: "Documents",
         nodes: [],
       },
       { name: "passwords.txt" },
+      { name: "myNotes.txt" },
+      { name: "email.txt" },
     ],
   },
   {
     name: "Desktop",
-    nodes: [],
+    nodes: [
+      {
+        name: "Programs",
+        nodes: [],
+      },
+    ],
   },
 ];
 
 type FinderProps = {
   handleMouseDown: (e: React.MouseEvent) => void;
+  mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
+  containerRef: React.MutableRefObject<HTMLDivElement | null>;
+  setSize: Dispatch<
+    SetStateAction<{
+      width: number;
+      height: number;
+    }>
+  >;
 };
 
-export default function Finder({ handleMouseDown }: FinderProps) {
+export default function Finder({
+  handleMouseDown,
+  mainLayoutRef,
+  containerRef,
+  setSize,
+}: FinderProps) {
   const [backHistory, setBackHistory] = useState<Node[]>([]);
   const [forwardHistory, setForwardHistory] = useState<Node[]>([]);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
@@ -112,6 +144,9 @@ export default function Finder({ handleMouseDown }: FinderProps) {
           selectedNode={selectedNode}
           handleNodeClick={handleNodeClick}
           handleMouseDown={handleMouseDown}
+          mainLayoutRef={mainLayoutRef}
+          containerRef={containerRef}
+          setSize={setSize}
         />
       </ResizablePanel>
       <ResizableHandle withHandle />

@@ -148,5 +148,5 @@ export default function useResizeWidthAndHeight({
       />
     </>
   );
-  return { ResizeControlElements, size };
+  return { ResizeControlElements, size, setSize };
 }

@@ -23,7 +23,7 @@ export default function RightPanelActionBar({
   return (
     <div
       onMouseDown={handleMouseDown}
-      className="flex items-center w-full h-12 bg-gray-200 mb-4 px-4 py-2 cursor-grab select-none"
+      className="flex items-center w-full h-12 bg-gray-200 px-4 py-2 cursor-grab select-none"
     >
       <div className="flex items-center">
         <Button

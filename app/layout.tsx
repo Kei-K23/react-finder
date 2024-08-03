@@ -5,8 +5,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "File Tree",
-  description: "File system tree with NextJS",
+  title: "React - Finder",
+  description:
+    "Recreating Mac OS file explore 'Finder' but this one is for web 🕸️",
 };
 
 export default function RootLayout({
