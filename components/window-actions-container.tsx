@@ -2,20 +2,50 @@ import React from "react";
 import { Button } from "./ui/button";
 import { Expand, Minus, X } from "lucide-react";
 
-export default function WindowActionsContainer() {
+type WindowActionsContainerProps = {
+  handleMouseDown: (e: React.MouseEvent) => void;
+};
+
+export default function WindowActionsContainer({
+  handleMouseDown,
+}: WindowActionsContainerProps) {
   return (
-    <div className="mb-4 flex items-center gap-x-1">
-      <Button size={"xsm"} variant={"destructive"} className="group">
-        <X className="size-[14px] hidden group-hover:block" />
-        <div className="size-[14px] block group-hover:hidden" />
+    <div
+      className="flex items-center gap-x-1 w-full h-12 p-2 cursor-grab"
+      onMouseDown={handleMouseDown}
+    >
+      <Button
+        size={"xsm"}
+        variant={"destructive"}
+        className="group"
+        onMouseDown={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <X className="size-[12px] text-neutral-800 font-semibold stroke-[3px] hidden group-hover:block" />
+        <div className="size-[12px] block group-hover:hidden" />
       </Button>
-      <Button size={"xsm"} variant={"warning"} className="group">
-        <Minus className="size-[14px] hidden group-hover:block" />
-        <div className="size-[14px] block group-hover:hidden" />
+      <Button
+        size={"xsm"}
+        variant={"warning"}
+        className="group"
+        onMouseDown={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <Minus className="size-[12px] text-neutral-800 font-semibold stroke-[3px] hidden group-hover:block" />
+        <div className="size-[12px] block group-hover:hidden" />
       </Button>
-      <Button size={"xsm"} variant={"success"} className="group">
-        <Expand className="size-[14px] hidden group-hover:block" />
-        <div className="size-[14px] block group-hover:hidden" />
+      <Button
+        size={"xsm"}
+        variant={"success"}
+        className="group"
+        onMouseDown={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <Expand className="size-[12px] text-neutral-800 font-semibold stroke-[3px] hidden group-hover:block" />
+        <div className="size-[12px] block group-hover:hidden" />
       </Button>
     </div>
   );

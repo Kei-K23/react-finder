@@ -30,7 +30,13 @@ export default function RightPanelActionBar({
           variant={"ghost"}
           size={"xs"}
           disabled={backHistory.length === 0}
-          onClick={handlePrevClick}
+          onClick={(e) => {
+            e.stopPropagation();
+            handlePrevClick();
+          }}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+          }}
         >
           <ChevronLeft />
         </Button>
@@ -39,6 +45,9 @@ export default function RightPanelActionBar({
           size={"xs"}
           disabled={forwardHistory.length === 0}
           onClick={handleNextClick}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+          }}
         >
           <ChevronRight />
         </Button>

@@ -1,6 +1,6 @@
 "use client";
 
-import FileTreeContainer from "@/components/file-tree-container";
+import Finder from "@/components/finder";
 import useDraggable from "@/hooks/use-draggable";
 import { useRef } from "react";
 
@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center overflow-hidden">
       <div ref={containerRef} className="absolute w-[672px]">
-        <FileTreeContainer handleMouseDown={handleMouseDown} />
+        <Finder handleMouseDown={handleMouseDown} />
       </div>
     </main>
   );

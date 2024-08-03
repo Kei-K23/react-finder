@@ -66,13 +66,11 @@ const nodes: Node[] = [
   },
 ];
 
-type FileTreeContainerProps = {
+type FinderProps = {
   handleMouseDown: (e: React.MouseEvent) => void;
 };
 
-export default function FileTreeContainer({
-  handleMouseDown,
-}: FileTreeContainerProps) {
+export default function Finder({ handleMouseDown }: FinderProps) {
   const [backHistory, setBackHistory] = useState<Node[]>([]);
   const [forwardHistory, setForwardHistory] = useState<Node[]>([]);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
@@ -116,6 +114,7 @@ export default function FileTreeContainer({
           nodes={nodes}
           selectedNode={selectedNode}
           handleNodeClick={handleNodeClick}
+          handleMouseDown={handleMouseDown}
         />
       </ResizablePanel>
       <ResizableHandle withHandle />
