@@ -9,8 +9,6 @@ export default function useDraggable({ containerRef }: UseDraggableProps) {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    console.log("hrer");
-
     const container = containerRef.current;
     if (container) {
       const rect = container.getBoundingClientRect();
