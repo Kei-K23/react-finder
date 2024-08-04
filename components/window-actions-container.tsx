@@ -4,6 +4,8 @@ import { Minus, X } from "lucide-react";
 import { useFinderState } from "@/store/use-finder-state";
 import { RiExpandDiagonal2Fill } from "react-icons/ri";
 import useResizeWindow from "@/hooks/use-resize-window";
+import { Node } from "@/type";
+import { useFinderStateMinimize } from "@/store/use-finder-minimize-state";
 
 type WindowActionsContainerProps = {
   handleMouseDown: (e: React.MouseEvent) => void;
@@ -17,6 +19,9 @@ type WindowActionsContainerProps = {
       height: number;
     }>
   >;
+  selectedNode: Node | null;
+  backHistory: Node[];
+  forwardHistory: Node[];
 };
 
 export default function WindowActionsContainer({
@@ -26,14 +31,40 @@ export default function WindowActionsContainer({
   headerRef,
   footerRef,
   setSize,
+  selectedNode,
+  backHistory,
+  forwardHistory,
 }: WindowActionsContainerProps) {
   const { onClose } = useFinderState();
+  const { finderMinimizeOpen, finderMinimizeClose, isFinderMinimize } =
+    useFinderStateMinimize();
   const { handleResize } = useResizeWindow({
     headerRef,
     mainLayoutRef,
     footerRef,
     setSize,
   });
+
+  const handleFinderMinimize = () => {
+    if (isFinderMinimize) {
+      finderMinimizeClose();
+    } else {
+      const containerCtx = containerRef?.current?.getBoundingClientRect();
+      finderMinimizeOpen({
+        size: {
+          width: containerCtx?.width!,
+          height: containerCtx?.height!,
+        },
+        position: {
+          top: containerCtx?.top!,
+          left: containerCtx?.left!,
+        },
+        backHistory,
+        forwardHistory,
+        selectedNode,
+      });
+    }
+  };
 
   return (
     <div
@@ -59,6 +90,10 @@ export default function WindowActionsContainer({
         className="group"
         onMouseDown={(e) => {
           e.stopPropagation();
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleFinderMinimize();
         }}
       >
         <Minus className="size-[12px] text-neutral-800 font-semibold stroke-[3px] hidden group-hover:block" />

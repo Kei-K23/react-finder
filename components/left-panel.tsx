@@ -6,6 +6,8 @@ import LeftPanelNodeItem from "./left-panel-node-item";
 type LeftPanelProps = {
   nodes: Node[];
   selectedNode: Node | null;
+  backHistory: Node[];
+  forwardHistory: Node[];
   handleNodeClick: (node: Node) => void;
   handleMouseDown: (e: React.MouseEvent) => void;
   mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -30,6 +32,8 @@ export default function LeftPanel({
   headerRef,
   footerRef,
   setSize,
+  backHistory,
+  forwardHistory,
 }: LeftPanelProps) {
   return (
     <div className="flex flex-col h-full w-full bg-gray-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-70 ">
@@ -40,6 +44,9 @@ export default function LeftPanel({
         headerRef={headerRef}
         footerRef={footerRef}
         setSize={setSize}
+        selectedNode={selectedNode}
+        backHistory={backHistory}
+        forwardHistory={forwardHistory}
       />
       <p className="text-xs text-neutral-300 p-2">Favorites</p>
       <ul className="select-none p-2">

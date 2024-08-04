@@ -41,7 +41,7 @@ export default function RightPanel({
   const { width: rightPanelWidth } = useWidthChange(rightPanelRef);
 
   return (
-    <div ref={rightPanelRef} className="flex h-full flex-col bg-neutral-900">
+    <div ref={rightPanelRef} className="flex h-full flex-col bg-neutral-800">
       <RightPanelActionBar
         handleMouseDown={handleMouseDown}
         selectedNode={selectedNode}

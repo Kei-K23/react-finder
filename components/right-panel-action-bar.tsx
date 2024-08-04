@@ -2,7 +2,6 @@ import React, { Dispatch, SetStateAction } from "react";
 import { Button } from "./ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Node } from "@/type";
-import { useFinderState } from "@/store/use-finder-state";
 import useResizeWindow from "@/hooks/use-resize-window";
 
 type RightPanelActionBarProps = {
@@ -35,8 +34,6 @@ export default function RightPanelActionBar({
   footerRef,
   setSize,
 }: RightPanelActionBarProps) {
-  const { isFinderResizeClose, finderResizeClose, finderResizeOpen } =
-    useFinderState();
   const { handleResize } = useResizeWindow({
     headerRef,
     mainLayoutRef,
@@ -62,6 +59,10 @@ export default function RightPanelActionBar({
           onMouseDown={(e) => {
             e.stopPropagation();
           }}
+          onDoubleClick={(e) => {
+            e.stopPropagation();
+          }}
+          className="hover:bg-neutral-800/35 hover:text-neutral-300"
         >
           <ChevronLeft />
         </Button>
@@ -73,6 +74,10 @@ export default function RightPanelActionBar({
           onMouseDown={(e) => {
             e.stopPropagation();
           }}
+          onDoubleClick={(e) => {
+            e.stopPropagation();
+          }}
+          className="hover:bg-neutral-800/35 hover:text-neutral-300"
         >
           <ChevronRight />
         </Button>

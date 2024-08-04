@@ -8,7 +8,7 @@ type FooterActionBarProps = {
 };
 
 export default function FooterActionBar({ footerRef }: FooterActionBarProps) {
-  const { onOpen, isFinderResizeOpen, onClose } = useFinderState();
+  const { onOpen, isFinderOpen, onClose } = useFinderState();
   return (
     <div
       ref={footerRef}
@@ -19,12 +19,12 @@ export default function FooterActionBar({ footerRef }: FooterActionBarProps) {
           <div className="size-12 bg-white rounded-lg">
             <ImFinder
               onClick={() => {
-                isFinderResizeOpen ? onClose() : onOpen();
+                isFinderOpen ? onClose() : onOpen();
               }}
               className="w-full h-full text-sky-600 "
             />
           </div>
-          {isFinderResizeOpen && (
+          {isFinderOpen && (
             <div className="size-[5px] absolute -bottom-2 left-[50%] -translate-x-[50%] rounded-full bg-gray-300" />
           )}
         </div>

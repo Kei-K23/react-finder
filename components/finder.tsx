@@ -8,7 +8,6 @@ import {
 import { Node } from "@/type";
 import LeftPanel from "./left-panel";
 import RightPanel from "./right-panel";
-import { calculateRightPanelDefaultSize } from "@/lib/utils";
 
 const nodes: Node[] = [
   {
@@ -115,7 +114,6 @@ export default function Finder({
   const [backHistory, setBackHistory] = useState<Node[]>([]);
   const [forwardHistory, setForwardHistory] = useState<Node[]>([]);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
-  const leftPanelWidth = calculateRightPanelDefaultSize(size.width);
 
   const handleNodeClick = (node: Node) => {
     if (!node.nodes) {
@@ -151,10 +149,9 @@ export default function Finder({
       direction="horizontal"
       className="rounded-lg border border-gray-500 drop-shadow-3xl"
     >
-      <ResizablePanel defaultSize={leftPanelWidth}>
+      <ResizablePanel defaultSize={20}>
         <LeftPanel
           nodes={nodes}
-          selectedNode={selectedNode}
           handleNodeClick={handleNodeClick}
           handleMouseDown={handleMouseDown}
           mainLayoutRef={mainLayoutRef}
@@ -162,6 +159,9 @@ export default function Finder({
           headerRef={headerRef}
           footerRef={footerRef}
           setSize={setSize}
+          selectedNode={selectedNode}
+          backHistory={backHistory}
+          forwardHistory={forwardHistory}
         />
       </ResizablePanel>
       <ResizableHandle

@@ -12,12 +12,12 @@ export default function RightPanelNodeItem({
   handleNodeClick,
 }: RightPanelNodeItemProps) {
   return (
-    <li key={node.name} onClick={() => handleNodeClick(node)}>
+    <li key={node.name} onDoubleClick={() => handleNodeClick(node)}>
       <div className="flex items-center flex-col gap-1">
         {node.nodes ? (
-          <Folder className="size-10 fill-blue-400" />
+          <Folder className="size-16 fill-blue-400 text-blue-400" />
         ) : (
-          <File className="size-10 fill-gray-200" />
+          <File className="size-16 fill-gray-200" />
         )}
         <span className=" text-wrap text-[13px] text-neutral-100">
           {node.name}
