@@ -1,6 +1,7 @@
 import React from "react";
 import { FaApple } from "react-icons/fa";
 import CurrentTime from "./current-time";
+import Battery from "./battery";
 
 type HeaderActonProps = {
   headerRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -14,7 +15,10 @@ export default function HeaderActon({ headerRef }: HeaderActonProps) {
     >
       <div className="flex items-center justify-between w-full">
         <FaApple className="text-neutral-100 size-5" />
-        <CurrentTime />
+        <div className="flex items-center gap-4 text-neutral-100">
+          <Battery />
+          <CurrentTime />
+        </div>
       </div>
     </div>
   );
