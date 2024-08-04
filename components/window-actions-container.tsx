@@ -13,12 +13,8 @@ type WindowActionsContainerProps = {
   mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
   headerRef: React.MutableRefObject<HTMLDivElement | null>;
   footerRef: React.MutableRefObject<HTMLDivElement | null>;
-  setSize: Dispatch<
-    SetStateAction<{
-      width: number;
-      height: number;
-    }>
-  >;
+  setWidth: (width: number) => void;
+  setHeight: (height: number) => void;
   selectedNode: Node | null;
   backHistory: Node[];
   forwardHistory: Node[];
@@ -30,24 +26,27 @@ export default function WindowActionsContainer({
   mainLayoutRef,
   headerRef,
   footerRef,
-  setSize,
+  setHeight,
+  setWidth,
   selectedNode,
   backHistory,
   forwardHistory,
 }: WindowActionsContainerProps) {
-  const { onClose } = useFinderState();
+  const { onClose, onOpen, setFinderMinimizeState } = useFinderState();
   const { finderMinimizeOpen, finderMinimizeClose, isFinderMinimize } =
     useFinderStateMinimize();
   const { handleResize } = useResizeWindow({
     headerRef,
     mainLayoutRef,
     footerRef,
-    setSize,
+    setWidth,
+    setHeight,
   });
 
   const handleFinderMinimize = () => {
     if (isFinderMinimize) {
       finderMinimizeClose();
+      onOpen();
     } else {
       const containerCtx = containerRef?.current?.getBoundingClientRect();
       finderMinimizeOpen({
@@ -63,6 +62,7 @@ export default function WindowActionsContainer({
         forwardHistory,
         selectedNode,
       });
+      onClose();
     }
   };
 
@@ -79,7 +79,10 @@ export default function WindowActionsContainer({
         onMouseDown={(e) => {
           e.stopPropagation();
         }}
-        onClick={onClose}
+        onClick={() => {
+          setFinderMinimizeState(null);
+          onClose();
+        }}
       >
         <X className="size-[12px] text-neutral-800 font-semibold stroke-[3px] hidden group-hover:block" />
         <div className="size-[12px] block group-hover:hidden" />

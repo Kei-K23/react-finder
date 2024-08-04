@@ -8,6 +8,7 @@ import {
 import { Node } from "@/type";
 import LeftPanel from "./left-panel";
 import RightPanel from "./right-panel";
+import { useFinderState } from "@/store/use-finder-state";
 
 const nodes: Node[] = [
   {
@@ -90,16 +91,10 @@ type FinderProps = {
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
   headerRef: React.MutableRefObject<HTMLDivElement | null>;
   footerRef: React.MutableRefObject<HTMLDivElement | null>;
-  setSize: Dispatch<
-    SetStateAction<{
-      width: number;
-      height: number;
-    }>
-  >;
-  size: {
-    width: number;
-    height: number;
-  };
+  setWidth: (width: number) => void;
+  setHeight: (height: number) => void;
+  width: number;
+  height: number;
 };
 
 export default function Finder({
@@ -108,12 +103,22 @@ export default function Finder({
   containerRef,
   headerRef,
   footerRef,
-  setSize,
-  size,
+  setHeight,
+  setWidth,
+  width,
+  height,
 }: FinderProps) {
-  const [backHistory, setBackHistory] = useState<Node[]>([]);
-  const [forwardHistory, setForwardHistory] = useState<Node[]>([]);
-  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
+  const { finderMinimizeState } = useFinderState();
+
+  const [backHistory, setBackHistory] = useState<Node[]>(
+    finderMinimizeState?.backHistory || []
+  );
+  const [forwardHistory, setForwardHistory] = useState<Node[]>(
+    finderMinimizeState?.forwardHistory || []
+  );
+  const [selectedNode, setSelectedNode] = useState<Node | null>(
+    finderMinimizeState?.selectedNode || null
+  );
 
   const handleNodeClick = (node: Node) => {
     if (!node.nodes) {
@@ -158,7 +163,8 @@ export default function Finder({
           containerRef={containerRef}
           headerRef={headerRef}
           footerRef={footerRef}
-          setSize={setSize}
+          setWidth={setWidth}
+          setHeight={setHeight}
           selectedNode={selectedNode}
           backHistory={backHistory}
           forwardHistory={forwardHistory}
@@ -180,7 +186,8 @@ export default function Finder({
           mainLayoutRef={mainLayoutRef}
           headerRef={headerRef}
           footerRef={footerRef}
-          setSize={setSize}
+          setWidth={setWidth}
+          setHeight={setHeight}
         />
       </ResizablePanel>
     </ResizablePanelGroup>

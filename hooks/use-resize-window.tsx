@@ -1,5 +1,6 @@
 "use client";
 
+import { DEFAULT_SIZE_FOR_FINDER } from "@/constant";
 import { useFinderState } from "@/store/use-finder-state";
 import React, { Dispatch, SetStateAction } from "react";
 
@@ -7,19 +8,16 @@ type UseResizeWindowProps = {
   mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
   footerRef: React.MutableRefObject<HTMLDivElement | null>;
   headerRef: React.MutableRefObject<HTMLDivElement | null>;
-  setSize: Dispatch<
-    SetStateAction<{
-      width: number;
-      height: number;
-    }>
-  >;
+  setWidth: (width: number) => void;
+  setHeight: (height: number) => void;
 };
 
 export default function useResizeWindow({
   mainLayoutRef,
   headerRef,
   footerRef,
-  setSize,
+  setWidth,
+  setHeight,
 }: UseResizeWindowProps) {
   const { isFinderResizeClose, finderResizeClose, finderResizeOpen } =
     useFinderState();
@@ -31,18 +29,25 @@ export default function useResizeWindow({
       footerCtx?.height! + (mainCtx?.height! - footerCtx?.bottom!);
 
     if (isFinderResizeClose) {
-      setSize({
-        width: mainLayoutRef?.current?.clientWidth!,
-        height:
-          mainLayoutRef?.current?.clientHeight! -
-          (headerRef?.current?.clientHeight! + footerHeightAndPosition!),
-      });
+      setWidth(mainLayoutRef?.current?.clientWidth!);
+      setHeight(
+        mainLayoutRef?.current?.clientHeight! -
+          (headerRef?.current?.clientHeight! + footerHeightAndPosition!)
+      );
+      // setSize({
+      //   width: mainLayoutRef?.current?.clientWidth!,
+      //   height:
+      //     mainLayoutRef?.current?.clientHeight! -
+      //     (headerRef?.current?.clientHeight! + footerHeightAndPosition!),
+      // });
       finderResizeOpen();
     } else {
-      setSize({
-        width: 800,
-        height: 500,
-      });
+      setWidth(DEFAULT_SIZE_FOR_FINDER.width);
+      setHeight(DEFAULT_SIZE_FOR_FINDER.height);
+      // setSize({
+      //   width: 800,
+      //   height: 500,
+      // });
       finderResizeClose();
     }
   };

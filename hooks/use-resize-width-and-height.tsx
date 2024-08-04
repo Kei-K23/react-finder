@@ -1,5 +1,6 @@
+import { DEFAULT_SIZE_FOR_FINDER } from "@/constant";
 import { useFinderState } from "@/store/use-finder-state";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type UseResizeWidthAndHeightProps = {
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -14,7 +15,12 @@ export default function useResizeWidthAndHeight({
   footerRef,
   headerRef,
 }: UseResizeWidthAndHeightProps) {
-  const [size, setSize] = useState({ width: 800, height: 500 });
+  const [width, setWidth] = useState(DEFAULT_SIZE_FOR_FINDER.width);
+  const [height, setHeight] = useState(DEFAULT_SIZE_FOR_FINDER.height);
+  const [position, setPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
   const { isFinderResizeClose, finderResizeClose } = useFinderState();
 
   const handleResize = (e: MouseEvent, direction: string) => {
@@ -31,18 +37,20 @@ export default function useResizeWidthAndHeight({
       const newWidth = e.clientX - rect.left;
 
       if (direction.includes("right")) {
-        setSize((prevSize) => ({
-          ...prevSize,
-          width: newWidth,
-        }));
+        // setSize((prevSize) => ({
+        //   ...prevSize,
+        //   width: newWidth,
+        // }));
+        setWidth(newWidth);
         container.style.left = `${rect.left}px`;
       }
       if (direction.includes("left")) {
         const potentialNewWidth = rect.right - e.clientX;
-        setSize((prevSize) => ({
-          ...prevSize,
-          width: potentialNewWidth,
-        }));
+        // setSize((prevSize) => ({
+        //   ...prevSize,
+        //   width: potentialNewWidth,
+        // }));
+        setWidth(potentialNewWidth);
         container.style.left = `${e.clientX}px`;
       }
       if (direction.includes("bottom")) {
@@ -51,10 +59,11 @@ export default function useResizeWidthAndHeight({
           potentialNewHeight <=
           mainCtx?.height! - headerHeight - footerHeight
         ) {
-          setSize((prevSize) => ({
-            ...prevSize,
-            height: potentialNewHeight,
-          }));
+          // setSize((prevSize) => ({
+          //   ...prevSize,
+          //   height: potentialNewHeight,
+          // }));
+          setHeight(potentialNewHeight);
           container.style.top = `${rect.top}px`;
         }
       }
@@ -63,10 +72,11 @@ export default function useResizeWidthAndHeight({
         const newTopPosition = e.clientY;
 
         if (isFinderResizeClose || headerHeight <= newTopPosition) {
-          setSize((prevSize) => ({
-            ...prevSize,
-            height: potentialNewHeight,
-          }));
+          // setSize((prevSize) => ({
+          //   ...prevSize,
+          //   height: potentialNewHeight,
+          // }));
+          setHeight(potentialNewHeight);
           container.style.top = `${newTopPosition}px`;
         }
       }
@@ -190,5 +200,19 @@ export default function useResizeWidthAndHeight({
     </>
   );
 
-  return { ResizeControlElements, size, setSize };
+  const resetSize = () => {
+    setHeight(DEFAULT_SIZE_FOR_FINDER.height);
+    setWidth(DEFAULT_SIZE_FOR_FINDER.width);
+  };
+
+  return {
+    ResizeControlElements,
+    width,
+    height,
+    setHeight,
+    setWidth,
+    position,
+    setPosition,
+    resetSize,
+  };
 }

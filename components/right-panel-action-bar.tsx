@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import { Button } from "./ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Node } from "@/type";
@@ -14,12 +14,8 @@ type RightPanelActionBarProps = {
   mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
   headerRef: React.MutableRefObject<HTMLDivElement | null>;
   footerRef: React.MutableRefObject<HTMLDivElement | null>;
-  setSize: Dispatch<
-    SetStateAction<{
-      width: number;
-      height: number;
-    }>
-  >;
+  setWidth: (width: number) => void;
+  setHeight: (height: number) => void;
 };
 
 export default function RightPanelActionBar({
@@ -32,13 +28,15 @@ export default function RightPanelActionBar({
   mainLayoutRef,
   headerRef,
   footerRef,
-  setSize,
+  setHeight,
+  setWidth,
 }: RightPanelActionBarProps) {
   const { handleResize } = useResizeWindow({
     headerRef,
     mainLayoutRef,
     footerRef,
-    setSize,
+    setHeight,
+    setWidth,
   });
 
   return (

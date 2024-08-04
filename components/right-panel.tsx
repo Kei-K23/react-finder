@@ -16,12 +16,8 @@ type RightPanelProps = {
   mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
   headerRef: React.MutableRefObject<HTMLDivElement | null>;
   footerRef: React.MutableRefObject<HTMLDivElement | null>;
-  setSize: Dispatch<
-    SetStateAction<{
-      width: number;
-      height: number;
-    }>
-  >;
+  setWidth: (width: number) => void;
+  setHeight: (height: number) => void;
 };
 
 export default function RightPanel({
@@ -35,7 +31,8 @@ export default function RightPanel({
   mainLayoutRef,
   headerRef,
   footerRef,
-  setSize,
+  setWidth,
+  setHeight,
 }: RightPanelProps) {
   const rightPanelRef = useRef<HTMLDivElement | null>(null);
   const { width: rightPanelWidth } = useWidthChange(rightPanelRef);
@@ -52,7 +49,8 @@ export default function RightPanel({
         mainLayoutRef={mainLayoutRef}
         headerRef={headerRef}
         footerRef={footerRef}
-        setSize={setSize}
+        setHeight={setHeight}
+        setWidth={setWidth}
       />
 
       {selectedNode?.nodes && selectedNode?.nodes?.length > 0 ? (

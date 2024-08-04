@@ -10,18 +10,20 @@ import { useFinderState } from "@/store/use-finder-state";
 import { useRef } from "react";
 
 export default function Home() {
-  const { isFinderOpen, isFinderResizeClose } = useFinderState();
+  const { isFinderOpen, isFinderResizeClose, finderMinimizeState } =
+    useFinderState();
 
   const headerRef = useRef<HTMLDivElement | null>(null);
   const footerRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mainLayoutRef = useRef<HTMLDivElement | null>(null);
-  const { size, ResizeControlElements, setSize } = useResizeWidthAndHeight({
-    containerRef,
-    footerRef,
-    mainLayoutRef,
-    headerRef,
-  });
+  const { width, height, ResizeControlElements, setWidth, setHeight } =
+    useResizeWidthAndHeight({
+      containerRef,
+      footerRef,
+      mainLayoutRef,
+      headerRef,
+    });
   const { handleMouseDown } = useDraggable({
     containerRef,
   });
@@ -42,10 +44,18 @@ export default function Home() {
           ref={containerRef}
           className={cn("absolute")}
           style={{
-            width: size.width,
-            height: size.height,
-            top: !isFinderResizeClose ? headerRef?.current?.clientHeight : "",
-            left: !isFinderResizeClose ? 0 : "",
+            width: width,
+            height: height,
+            top: !isFinderResizeClose
+              ? headerRef?.current?.clientHeight
+              : finderMinimizeState?.position !== null
+              ? finderMinimizeState?.position.top
+              : "",
+            left: !isFinderResizeClose
+              ? 0
+              : finderMinimizeState?.position !== null
+              ? finderMinimizeState?.position.left
+              : "",
           }}
         >
           <Finder
@@ -54,13 +64,20 @@ export default function Home() {
             containerRef={containerRef}
             headerRef={headerRef}
             footerRef={footerRef}
-            setSize={setSize}
-            size={size}
+            setWidth={setWidth}
+            setHeight={setHeight}
+            width={width}
+            height={height}
           />
           <ResizeControlElements />
         </div>
       )}
-      <FooterActionBar footerRef={footerRef} />
+      <FooterActionBar
+        mainLayoutRef={mainLayoutRef}
+        containerRef={containerRef}
+        headerRef={headerRef}
+        footerRef={footerRef}
+      />
     </div>
   );
 }
