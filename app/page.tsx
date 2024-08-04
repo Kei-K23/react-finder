@@ -31,7 +31,7 @@ export default function Home() {
       <img
         src={"/wallpaper_1.jpg"}
         alt="wallpaper image"
-        className="w-full h-full absolute object-cover"
+        className="w-full h-full absolute object-cover select-none"
       />
       {isFinderOpen && (
         <div
@@ -40,7 +40,7 @@ export default function Home() {
           style={{
             width: size.width,
             height: size.height,
-            top: !isFinderClose ? 0 : "",
+            top: !isFinderClose ? headerRef?.current?.clientHeight : "",
             left: !isFinderClose ? 0 : "",
           }}
         >

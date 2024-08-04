@@ -26,12 +26,12 @@ export default function WindowActionsContainer({
 }: WindowActionsContainerProps) {
   const { isFinderClose, finderClose, finderOpen, onClose } = useFinderState();
   const handleResize = () => {
-    console.log(headerRef?.current?.clientHeight);
-
     if (isFinderClose) {
       setSize({
         width: mainLayoutRef?.current?.clientWidth!,
-        height: mainLayoutRef?.current?.clientHeight!,
+        height:
+          mainLayoutRef?.current?.clientHeight! -
+          headerRef?.current?.clientHeight!,
       });
       finderOpen();
     } else {
