@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { Dispatch, SetStateAction, useRef } from "react";
 import { Node } from "@/type";
 import RightPanelActionBar from "./right-panel-action-bar";
 import RightPanelNodeItem from "./right-panel-node-item";
@@ -13,6 +13,15 @@ type RightPanelProps = {
   handlePrevClick: () => void;
   handleNextClick: () => void;
   handleMouseDown: (e: React.MouseEvent) => void;
+  mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
+  headerRef: React.MutableRefObject<HTMLDivElement | null>;
+  footerRef: React.MutableRefObject<HTMLDivElement | null>;
+  setSize: Dispatch<
+    SetStateAction<{
+      width: number;
+      height: number;
+    }>
+  >;
 };
 
 export default function RightPanel({
@@ -23,12 +32,16 @@ export default function RightPanel({
   handlePrevClick,
   handleNextClick,
   handleMouseDown,
+  mainLayoutRef,
+  headerRef,
+  footerRef,
+  setSize,
 }: RightPanelProps) {
   const rightPanelRef = useRef<HTMLDivElement | null>(null);
   const { width: rightPanelWidth } = useWidthChange(rightPanelRef);
 
   return (
-    <div ref={rightPanelRef} className="flex h-full flex-col bg-gray-300">
+    <div ref={rightPanelRef} className="flex h-full flex-col bg-neutral-900">
       <RightPanelActionBar
         handleMouseDown={handleMouseDown}
         selectedNode={selectedNode}
@@ -36,6 +49,10 @@ export default function RightPanel({
         handlePrevClick={handlePrevClick}
         backHistory={backHistory}
         forwardHistory={forwardHistory}
+        mainLayoutRef={mainLayoutRef}
+        headerRef={headerRef}
+        footerRef={footerRef}
+        setSize={setSize}
       />
 
       {selectedNode?.nodes && selectedNode?.nodes?.length > 0 ? (

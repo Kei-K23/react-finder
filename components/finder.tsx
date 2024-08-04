@@ -89,6 +89,7 @@ type FinderProps = {
   mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
   headerRef: React.MutableRefObject<HTMLDivElement | null>;
+  footerRef: React.MutableRefObject<HTMLDivElement | null>;
   setSize: Dispatch<
     SetStateAction<{
       width: number;
@@ -102,6 +103,7 @@ export default function Finder({
   mainLayoutRef,
   containerRef,
   headerRef,
+  footerRef,
   setSize,
 }: FinderProps) {
   const [backHistory, setBackHistory] = useState<Node[]>([]);
@@ -140,7 +142,7 @@ export default function Finder({
   return (
     <ResizablePanelGroup
       direction="horizontal"
-      className="rounded-lg border border-gray-500"
+      className="rounded-lg border border-gray-500 drop-shadow-3xl"
     >
       <ResizablePanel defaultSize={20}>
         <LeftPanel
@@ -151,10 +153,14 @@ export default function Finder({
           mainLayoutRef={mainLayoutRef}
           containerRef={containerRef}
           headerRef={headerRef}
+          footerRef={footerRef}
           setSize={setSize}
         />
       </ResizablePanel>
-      <ResizableHandle withHandle />
+      <ResizableHandle
+        withHandle={false}
+        className="border-[0.7px] border-gray-500"
+      />
       <ResizablePanel defaultSize={80}>
         <RightPanel
           selectedNode={selectedNode}
@@ -164,6 +170,10 @@ export default function Finder({
           backHistory={backHistory}
           forwardHistory={forwardHistory}
           handleMouseDown={handleMouseDown}
+          mainLayoutRef={mainLayoutRef}
+          headerRef={headerRef}
+          footerRef={footerRef}
+          setSize={setSize}
         />
       </ResizablePanel>
     </ResizablePanelGroup>

@@ -11,6 +11,7 @@ type LeftPanelProps = {
   mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
   headerRef: React.MutableRefObject<HTMLDivElement | null>;
+  footerRef: React.MutableRefObject<HTMLDivElement | null>;
   setSize: Dispatch<
     SetStateAction<{
       width: number;
@@ -27,15 +28,17 @@ export default function LeftPanel({
   mainLayoutRef,
   containerRef,
   headerRef,
+  footerRef,
   setSize,
 }: LeftPanelProps) {
   return (
-    <div className="flex flex-col h-full w-full bg-gray-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-50 ">
+    <div className="flex flex-col h-full w-full bg-gray-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-70 ">
       <WindowActionsContainer
         handleMouseDown={handleMouseDown}
         mainLayoutRef={mainLayoutRef}
         containerRef={containerRef}
         headerRef={headerRef}
+        footerRef={footerRef}
         setSize={setSize}
       />
       <p className="text-xs text-neutral-300 p-2">Favorites</p>

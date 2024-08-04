@@ -1,14 +1,19 @@
 import React from "react";
-import { Button } from "./ui/button";
-import { Folders } from "lucide-react";
 import { useFinderState } from "@/store/use-finder-state";
 import { ImFinder } from "react-icons/im";
 import ActionTooltip from "./action-tooltip";
 
-export default function FooterActionBar() {
+type FooterActionBarProps = {
+  footerRef: React.MutableRefObject<HTMLDivElement | null>;
+};
+
+export default function FooterActionBar({ footerRef }: FooterActionBarProps) {
   const { onOpen, isFinderOpen, onClose } = useFinderState();
   return (
-    <div className="fixed bottom-3 left-[50%] -translate-x-[50%] w-[650px] h-[70px] rounded-xl flex items-center px-3 py-2 z-10 bg-gray-700 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-50 border border-gray-500">
+    <div
+      ref={footerRef}
+      className="fixed bottom-3 left-[50%] -translate-x-[50%] w-[650px] h-[70px] rounded-xl flex items-center px-3 py-2 z-10 bg-gray-700 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-50 border border-gray-500"
+    >
       <ActionTooltip title="Finder" offSet={20}>
         <div className="relative">
           <div className="size-12 bg-white rounded-lg">

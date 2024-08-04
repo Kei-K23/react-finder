@@ -13,6 +13,7 @@ export default function Home() {
   const { isFinderOpen, isFinderClose } = useFinderState();
 
   const headerRef = useRef<HTMLDivElement | null>(null);
+  const footerRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mainLayoutRef = useRef<HTMLDivElement | null>(null);
   const { size, ResizeControlElements, setSize } = useResizeWidthAndHeight({
@@ -49,12 +50,13 @@ export default function Home() {
             mainLayoutRef={mainLayoutRef}
             containerRef={containerRef}
             headerRef={headerRef}
+            footerRef={footerRef}
             setSize={setSize}
           />
           <ResizeControlElements />
         </div>
       )}
-      <FooterActionBar />
+      <FooterActionBar footerRef={footerRef} />
     </div>
   );
 }

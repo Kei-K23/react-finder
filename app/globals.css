@@ -94,4 +94,8 @@ body {
   .grid-cols-17 {
     grid-template-columns: repeat(17, minmax(0, 1fr));
   }
+
+  .drop-shadow-3xl {
+    filter: drop-shadow(0 27px 27px rgb(0 0 0 / 0.6));
+  }
 }

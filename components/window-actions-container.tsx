@@ -3,12 +3,14 @@ import { Button } from "./ui/button";
 import { Minus, X } from "lucide-react";
 import { useFinderState } from "@/store/use-finder-state";
 import { RiExpandDiagonal2Fill } from "react-icons/ri";
+import useResizeWindow from "@/hooks/use-resize-window";
 
 type WindowActionsContainerProps = {
   handleMouseDown: (e: React.MouseEvent) => void;
-  mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
+  mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
   headerRef: React.MutableRefObject<HTMLDivElement | null>;
+  footerRef: React.MutableRefObject<HTMLDivElement | null>;
   setSize: Dispatch<
     SetStateAction<{
       width: number;
@@ -19,33 +21,25 @@ type WindowActionsContainerProps = {
 
 export default function WindowActionsContainer({
   handleMouseDown,
-  mainLayoutRef,
   containerRef,
+  mainLayoutRef,
   headerRef,
+  footerRef,
   setSize,
 }: WindowActionsContainerProps) {
-  const { isFinderClose, finderClose, finderOpen, onClose } = useFinderState();
-  const handleResize = () => {
-    if (isFinderClose) {
-      setSize({
-        width: mainLayoutRef?.current?.clientWidth!,
-        height:
-          mainLayoutRef?.current?.clientHeight! -
-          headerRef?.current?.clientHeight!,
-      });
-      finderOpen();
-    } else {
-      setSize({
-        width: 800,
-        height: 500,
-      });
-      finderClose();
-    }
-  };
+  const { onClose } = useFinderState();
+  const { handleResize } = useResizeWindow({
+    headerRef,
+    mainLayoutRef,
+    footerRef,
+    setSize,
+  });
+
   return (
     <div
       className="flex items-center gap-x-1 w-full h-12 p-2 cursor-grab"
       onMouseDown={handleMouseDown}
+      onDoubleClick={handleResize}
     >
       <Button
         size={"xsm"}
