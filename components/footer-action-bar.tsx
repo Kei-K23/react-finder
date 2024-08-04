@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useFinderState } from "@/store/use-finder-state";
 import { ImFinder } from "react-icons/im";
 import ActionTooltip from "./action-tooltip";
 import { useFinderStateMinimize } from "@/store/use-finder-minimize-state";
 import useResizeWidthAndHeight from "@/hooks/use-resize-width-and-height";
 import { Separator } from "./ui/separator";
+import gsap from "gsap";
 
 type FooterActionBarProps = {
   footerRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -19,8 +20,8 @@ export default function FooterActionBar({
   headerRef,
   containerRef,
 }: FooterActionBarProps) {
-  const { onOpen, isFinderOpen, onClose, setFinderMinimizeState } =
-    useFinderState();
+  const buttonRef = useRef<HTMLDivElement | null>(null);
+  const { onOpen, isFinderOpen, setFinderMinimizeState } = useFinderState();
   const { isFinderMinimize, finderMinimizeClose, prevState } =
     useFinderStateMinimize();
   const { resetSize } = useResizeWidthAndHeight({
@@ -37,10 +38,21 @@ export default function FooterActionBar({
       <div className="mr-auto ">
         <ActionTooltip title="Finder" offSet={20}>
           <div className="relative">
-            <div className="size-12 bg-white rounded-lg">
+            <div ref={buttonRef} className="size-12 bg-white rounded-lg">
               <ImFinder
                 onClick={() => {
                   if (!isFinderOpen) {
+                    // Click bounce animation
+                    gsap.to(buttonRef.current, {
+                      y: -50,
+                      duration: 0.3,
+                      onComplete: () => {
+                        gsap.to(buttonRef.current, {
+                          y: 0,
+                          duration: 0.2,
+                        });
+                      },
+                    });
                     if (prevState === null) {
                       resetSize();
                       onOpen();
