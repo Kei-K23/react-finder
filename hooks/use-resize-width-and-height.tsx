@@ -29,18 +29,19 @@ export default function useResizeWidthAndHeight({
     if (container) {
       const rect = container.getBoundingClientRect();
       const newWidth = e.clientX - rect.left;
-      const newHeight = e.clientY - rect.top;
 
       if (direction.includes("right")) {
         setSize((prevSize) => ({
           ...prevSize,
           width: newWidth,
         }));
+        container.style.left = `${rect.left}px`;
       }
       if (direction.includes("left")) {
+        const potentialNewWidth = rect.right - e.clientX;
         setSize((prevSize) => ({
           ...prevSize,
-          width: rect.right - e.clientX,
+          width: potentialNewWidth,
         }));
         container.style.left = `${e.clientX}px`;
       }
@@ -54,6 +55,7 @@ export default function useResizeWidthAndHeight({
             ...prevSize,
             height: potentialNewHeight,
           }));
+          container.style.top = `${rect.top}px`;
         }
       }
       if (direction.includes("top")) {

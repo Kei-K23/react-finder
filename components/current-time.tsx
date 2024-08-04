@@ -35,7 +35,7 @@ const CurrentTime = () => {
     };
 
     // Update the time every minute
-    const intervalId = setInterval(updateTime, 60000);
+    const intervalId = setInterval(updateTime, 6000);
 
     // Initial call to set the current time immediately
     updateTime();

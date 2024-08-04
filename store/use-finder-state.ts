@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 type UseFinderStateType = {
-    isfinderResizeOpen: boolean;
+    isFinderResizeOpen: boolean;
     isFinderResizeClose: boolean;
     onOpen: () => void;
     onClose: () => void;
@@ -10,10 +10,10 @@ type UseFinderStateType = {
 }
 
 export const useFinderState = create<UseFinderStateType>((set) => ({
-    isfinderResizeOpen: true,
+    isFinderResizeOpen: true,
     isFinderResizeClose: true,
-    onOpen: () => set({ isfinderResizeOpen: true }),
-    onClose: () => set({ isfinderResizeOpen: false }),
+    onOpen: () => set({ isFinderResizeOpen: true }),
+    onClose: () => set({ isFinderResizeOpen: false }),
     finderResizeOpen: () => set({ isFinderResizeClose: false }),
     finderResizeClose: () => set({ isFinderResizeClose: true })
 }));

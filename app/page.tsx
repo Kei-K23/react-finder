@@ -10,7 +10,7 @@ import { useFinderState } from "@/store/use-finder-state";
 import { useRef } from "react";
 
 export default function Home() {
-  const { isfinderResizeOpen, isFinderResizeClose } = useFinderState();
+  const { isFinderResizeOpen, isFinderResizeClose } = useFinderState();
 
   const headerRef = useRef<HTMLDivElement | null>(null);
   const footerRef = useRef<HTMLDivElement | null>(null);
@@ -37,7 +37,7 @@ export default function Home() {
         alt="wallpaper image"
         className="w-full h-full absolute object-cover select-none"
       />
-      {isfinderResizeOpen && (
+      {isFinderResizeOpen && (
         <div
           ref={containerRef}
           className={cn("absolute")}
@@ -55,6 +55,7 @@ export default function Home() {
             headerRef={headerRef}
             footerRef={footerRef}
             setSize={setSize}
+            size={size}
           />
           <ResizeControlElements />
         </div>
