@@ -1,12 +1,14 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { Button } from "./ui/button";
-import { Expand, Minus, X } from "lucide-react";
+import { Minus, X } from "lucide-react";
 import { useFinderState } from "@/store/use-finder-state";
+import { RiExpandDiagonal2Fill } from "react-icons/ri";
 
 type WindowActionsContainerProps = {
   handleMouseDown: (e: React.MouseEvent) => void;
   mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
+  headerRef: React.MutableRefObject<HTMLDivElement | null>;
   setSize: Dispatch<
     SetStateAction<{
       width: number;
@@ -19,10 +21,13 @@ export default function WindowActionsContainer({
   handleMouseDown,
   mainLayoutRef,
   containerRef,
+  headerRef,
   setSize,
 }: WindowActionsContainerProps) {
   const { isFinderClose, finderClose, finderOpen, onClose } = useFinderState();
   const handleResize = () => {
+    console.log(headerRef?.current?.clientHeight);
+
     if (isFinderClose) {
       setSize({
         width: mainLayoutRef?.current?.clientWidth!,
@@ -74,7 +79,7 @@ export default function WindowActionsContainer({
         }}
         onClick={handleResize}
       >
-        <Expand className="size-[12px] text-neutral-800 font-semibold stroke-[3px] hidden group-hover:block" />
+        <RiExpandDiagonal2Fill className="size-[12px] text-neutral-800 font-semibold stroke-[2px] hidden group-hover:block" />
         <div className="size-[12px] block group-hover:hidden" />
       </Button>
     </div>

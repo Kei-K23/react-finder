@@ -10,6 +10,7 @@ type LeftPanelProps = {
   handleMouseDown: (e: React.MouseEvent) => void;
   mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
+  headerRef: React.MutableRefObject<HTMLDivElement | null>;
   setSize: Dispatch<
     SetStateAction<{
       width: number;
@@ -25,6 +26,7 @@ export default function LeftPanel({
   handleMouseDown,
   mainLayoutRef,
   containerRef,
+  headerRef,
   setSize,
 }: LeftPanelProps) {
   return (
@@ -33,6 +35,7 @@ export default function LeftPanel({
         handleMouseDown={handleMouseDown}
         mainLayoutRef={mainLayoutRef}
         containerRef={containerRef}
+        headerRef={headerRef}
         setSize={setSize}
       />
       <p className="text-xs text-neutral-300 p-2">Favorites</p>

@@ -8,7 +8,6 @@ import {
 import { Node } from "@/type";
 import LeftPanel from "./left-panel";
 import RightPanel from "./right-panel";
-import useResizeWidthAndHeight from "@/hooks/use-resize-width-and-height";
 
 const nodes: Node[] = [
   {
@@ -89,6 +88,7 @@ type FinderProps = {
   handleMouseDown: (e: React.MouseEvent) => void;
   mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
+  headerRef: React.MutableRefObject<HTMLDivElement | null>;
   setSize: Dispatch<
     SetStateAction<{
       width: number;
@@ -101,6 +101,7 @@ export default function Finder({
   handleMouseDown,
   mainLayoutRef,
   containerRef,
+  headerRef,
   setSize,
 }: FinderProps) {
   const [backHistory, setBackHistory] = useState<Node[]>([]);
@@ -149,6 +150,7 @@ export default function Finder({
           handleMouseDown={handleMouseDown}
           mainLayoutRef={mainLayoutRef}
           containerRef={containerRef}
+          headerRef={headerRef}
           setSize={setSize}
         />
       </ResizablePanel>

@@ -14,3 +14,10 @@ In recently, I really liked the UI style call `glassmorphism`. I always wanted t
 - TailwindCSS
 - ShadcnUI
 - Zustand
+
+## Todo
+
+- [ ] Folder and file create, delete and rename
+- [ ] Sortable folders and files
+- [ ] Drag and drop every node
+- [ ] Add Sentry error management
