@@ -10,7 +10,7 @@ import { useFinderState } from "@/store/use-finder-state";
 import { useRef } from "react";
 
 export default function Home() {
-  const { isFinderOpen, isFinderClose } = useFinderState();
+  const { isfinderResizeOpen, isFinderResizeClose } = useFinderState();
 
   const headerRef = useRef<HTMLDivElement | null>(null);
   const footerRef = useRef<HTMLDivElement | null>(null);
@@ -18,6 +18,9 @@ export default function Home() {
   const mainLayoutRef = useRef<HTMLDivElement | null>(null);
   const { size, ResizeControlElements, setSize } = useResizeWidthAndHeight({
     containerRef,
+    footerRef,
+    mainLayoutRef,
+    headerRef,
   });
   const { handleMouseDown } = useDraggable({
     containerRef,
@@ -34,15 +37,15 @@ export default function Home() {
         alt="wallpaper image"
         className="w-full h-full absolute object-cover select-none"
       />
-      {isFinderOpen && (
+      {isfinderResizeOpen && (
         <div
           ref={containerRef}
           className={cn("absolute")}
           style={{
             width: size.width,
             height: size.height,
-            top: !isFinderClose ? headerRef?.current?.clientHeight : "",
-            left: !isFinderClose ? 0 : "",
+            top: !isFinderResizeClose ? headerRef?.current?.clientHeight : "",
+            left: !isFinderResizeClose ? 0 : "",
           }}
         >
           <Finder

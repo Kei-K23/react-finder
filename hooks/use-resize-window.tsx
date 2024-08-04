@@ -21,7 +21,8 @@ export default function useResizeWindow({
   footerRef,
   setSize,
 }: UseResizeWindowProps) {
-  const { isFinderClose, finderClose, finderOpen } = useFinderState();
+  const { isFinderResizeClose, finderResizeClose, finderResizeOpen } =
+    useFinderState();
 
   const handleResize = () => {
     const footerCtx = footerRef?.current?.getBoundingClientRect();
@@ -29,20 +30,20 @@ export default function useResizeWindow({
     const footerHeightAndPosition =
       footerCtx?.height! + (mainCtx?.height! - footerCtx?.bottom!);
 
-    if (isFinderClose) {
+    if (isFinderResizeClose) {
       setSize({
         width: mainLayoutRef?.current?.clientWidth!,
         height:
           mainLayoutRef?.current?.clientHeight! -
           (headerRef?.current?.clientHeight! + footerHeightAndPosition!),
       });
-      finderOpen();
+      finderResizeOpen();
     } else {
       setSize({
         width: 800,
         height: 500,
       });
-      finderClose();
+      finderResizeClose();
     }
   };
 

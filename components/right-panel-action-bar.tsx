@@ -35,7 +35,8 @@ export default function RightPanelActionBar({
   footerRef,
   setSize,
 }: RightPanelActionBarProps) {
-  const { isFinderClose, finderClose, finderOpen } = useFinderState();
+  const { isFinderResizeClose, finderResizeClose, finderResizeOpen } =
+    useFinderState();
   const { handleResize } = useResizeWindow({
     headerRef,
     mainLayoutRef,

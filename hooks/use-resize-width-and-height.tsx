@@ -1,16 +1,31 @@
+import { useFinderState } from "@/store/use-finder-state";
 import React, { useState } from "react";
 
 type UseResizeWidthAndHeightProps = {
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
+  mainLayoutRef: React.MutableRefObject<HTMLDivElement | null>;
+  footerRef: React.MutableRefObject<HTMLDivElement | null>;
+  headerRef: React.MutableRefObject<HTMLDivElement | null>;
 };
 
 export default function useResizeWidthAndHeight({
   containerRef,
+  mainLayoutRef,
+  footerRef,
+  headerRef,
 }: UseResizeWidthAndHeightProps) {
   const [size, setSize] = useState({ width: 800, height: 500 });
+  const { isFinderResizeClose, finderResizeClose } = useFinderState();
 
   const handleResize = (e: MouseEvent, direction: string) => {
     const container = containerRef.current;
+    const footerCtx = footerRef?.current?.getBoundingClientRect();
+    const mainCtx = mainLayoutRef?.current?.getBoundingClientRect();
+    const headerHeight =
+      headerRef?.current?.getBoundingClientRect().height || 0;
+    const footerHeight =
+      footerCtx?.height! + (mainCtx?.height! - footerCtx?.bottom!);
+
     if (container) {
       const rect = container.getBoundingClientRect();
       const newWidth = e.clientX - rect.left;
@@ -30,17 +45,28 @@ export default function useResizeWidthAndHeight({
         container.style.left = `${e.clientX}px`;
       }
       if (direction.includes("bottom")) {
-        setSize((prevSize) => ({
-          ...prevSize,
-          height: newHeight,
-        }));
+        const potentialNewHeight = e.clientY - rect.top;
+        if (
+          potentialNewHeight <=
+          mainCtx?.height! - headerHeight - footerHeight
+        ) {
+          setSize((prevSize) => ({
+            ...prevSize,
+            height: potentialNewHeight,
+          }));
+        }
       }
       if (direction.includes("top")) {
-        setSize((prevSize) => ({
-          ...prevSize,
-          height: rect.bottom - e.clientY,
-        }));
-        container.style.top = `${e.clientY}px`;
+        const potentialNewHeight = rect.bottom - e.clientY;
+        const newTopPosition = e.clientY;
+
+        if (isFinderResizeClose || headerHeight <= newTopPosition) {
+          setSize((prevSize) => ({
+            ...prevSize,
+            height: potentialNewHeight,
+          }));
+          container.style.top = `${newTopPosition}px`;
+        }
       }
     }
   };
@@ -103,7 +129,10 @@ export default function useResizeWidthAndHeight({
         }}
       />
       <div
-        onMouseDown={(e) => startResizing(e, "bottom-right")}
+        onMouseDown={(e) => {
+          finderResizeClose();
+          startResizing(e, "bottom-right");
+        }}
         style={{
           position: "absolute",
           bottom: 0,
@@ -114,7 +143,11 @@ export default function useResizeWidthAndHeight({
         }}
       />
       <div
-        onMouseDown={(e) => startResizing(e, "bottom-left")}
+        onMouseDown={(e) => {
+          // Behavior to reset the state to close full max windows for Finder when resize to corner
+          finderResizeClose();
+          startResizing(e, "bottom-left");
+        }}
         style={{
           position: "absolute",
           bottom: 0,
@@ -125,7 +158,10 @@ export default function useResizeWidthAndHeight({
         }}
       />
       <div
-        onMouseDown={(e) => startResizing(e, "top-right")}
+        onMouseDown={(e) => {
+          finderResizeClose();
+          startResizing(e, "top-right");
+        }}
         style={{
           position: "absolute",
           top: 0,
@@ -136,7 +172,10 @@ export default function useResizeWidthAndHeight({
         }}
       />
       <div
-        onMouseDown={(e) => startResizing(e, "top-left")}
+        onMouseDown={(e) => {
+          finderResizeClose();
+          startResizing(e, "top-left");
+        }}
         style={{
           position: "absolute",
           top: 0,
@@ -148,5 +187,6 @@ export default function useResizeWidthAndHeight({
       />
     </>
   );
+
   return { ResizeControlElements, size, setSize };
 }
