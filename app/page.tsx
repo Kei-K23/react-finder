@@ -7,9 +7,11 @@ import useDraggable from "@/hooks/use-draggable";
 import useResizeWidthAndHeight from "@/hooks/use-resize-width-and-height";
 import { cn } from "@/lib/utils";
 import { useFinderState } from "@/store/use-finder-state";
+import { useSettingsStore } from "@/store/use-settings-store";
 import { useRef } from "react";
 
 export default function Home() {
+  const { wallpaper } = useSettingsStore();
   const { isFinderOpen, isFinderResizeClose, finderMinimizeState } =
     useFinderState();
 
@@ -35,7 +37,7 @@ export default function Home() {
     >
       <HeaderActon headerRef={headerRef} />
       <img
-        src={"/wallpaper_1.jpg"}
+        src={wallpaper}
         alt="wallpaper image"
         className="w-full h-full absolute object-cover select-none"
       />

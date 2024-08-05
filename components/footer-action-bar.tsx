@@ -38,8 +38,10 @@ export default function FooterActionBar({
       <div className="mr-auto ">
         <ActionTooltip title="Finder" offSet={20}>
           <div className="relative">
-            <div ref={buttonRef} className="size-12 bg-white rounded-lg">
-              <ImFinder
+            <div ref={buttonRef} className="size-14">
+              <img
+                src="/finder-icon.png"
+                alt="finder icon"
                 onClick={() => {
                   if (!isFinderOpen) {
                     // Click bounce animation
@@ -65,11 +67,11 @@ export default function FooterActionBar({
                     }
                   }
                 }}
-                className="w-full h-full text-sky-600 "
+                className="w-full h-full text-sky-600 cursor-pointer object-cover"
               />
             </div>
             {isFinderOpen && (
-              <div className="size-[5px] absolute -bottom-2 left-[50%] -translate-x-[50%] rounded-full bg-gray-300" />
+              <div className="size-[5px] absolute -bottom-1 left-[50%] -translate-x-[50%] rounded-full bg-gray-300" />
             )}
           </div>
         </ActionTooltip>
@@ -84,14 +86,16 @@ export default function FooterActionBar({
               offSet={20}
             >
               <div className="relative">
-                <div className="size-12 bg-white rounded-lg">
-                  <ImFinder
+                <div className="size-14">
+                  <img
+                    src="/finder-icon.png"
+                    alt="finder icon"
                     onClick={() => {
                       setFinderMinimizeState(prevState);
                       finderMinimizeClose();
                       onOpen();
                     }}
-                    className="w-full h-full text-sky-600 "
+                    className="w-full h-full text-sky-600 cursor-pointer object-cover"
                   />
                 </div>
                 {isFinderOpen && (
