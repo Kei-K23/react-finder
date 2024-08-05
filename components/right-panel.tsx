@@ -56,7 +56,7 @@ export default function RightPanel({
       {selectedNode?.nodes && selectedNode?.nodes?.length > 0 ? (
         <ul
           className={cn(
-            "grid grid-cols-2 gap-3 overflow-auto p-3",
+            "grid grid-cols-2 gap-3 overflow-auto p-3  scrollbar-thin",
             rightPanelWidth > 400 && rightPanelWidth < 500 && "grid-cols-2",
             rightPanelWidth > 500 && rightPanelWidth < 600 && "grid-cols-3",
             rightPanelWidth > 600 && rightPanelWidth < 700 && "grid-cols-4",

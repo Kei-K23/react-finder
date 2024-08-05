@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import { useFinderState } from "@/store/use-finder-state";
-import { ImFinder } from "react-icons/im";
 import ActionTooltip from "./action-tooltip";
 import { useFinderStateMinimize } from "@/store/use-finder-minimize-state";
 import useResizeWidthAndHeight from "@/hooks/use-resize-width-and-height";
@@ -59,6 +58,7 @@ export default function FooterActionBar({
                     }
                     if (prevState === null) {
                       resetSize();
+                      setFinderMinimizeState(null);
                       onOpen();
                     } else {
                       setFinderMinimizeState(prevState);

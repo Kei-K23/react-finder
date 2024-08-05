@@ -21,10 +21,13 @@ export default function AboutHoverCard() {
         </Button>
       </HoverCardTrigger>
       <HoverCardContent className="bg-neutral-700 bg-clip-padding backdrop-filter flex items-center flex-col backdrop-blur-xl bg-opacity-100 select-none text-neutral-100 border-gray-500">
-        <h3>React Finder</h3>
+        <h3>React Finder 🗂️</h3>
         <p className="mt-3 text-[14px] text-center">
           Recreating Mac OS file explore &apos;Finder&apos; 🗂️ but this one is
           for web with the power of React, NextJS, TailwindCSS and ShadcnUI.
+        </p>
+        <p className="mt-2 text-[14px] text-center">
+          Give a star 🌟 to support my work
         </p>
         <p className="text-[13px] mt-3">
           Create 💙 with by{" "}

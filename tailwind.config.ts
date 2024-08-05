@@ -7,7 +7,7 @@ const config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-	],
+  ],
   prefix: "",
   theme: {
     container: {
@@ -74,7 +74,28 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"),
+  // @ts-ignore
+  function ({ addUtilities }) {
+    const newUtilities = {
+      '.scrollbar-thin::-webkit-scrollbar': {
+        width: '7px',
+      },
+      '.scrollbar-thin::-webkit-scrollbar-thumb': {
+        backgroundColor: '#666',
+        borderRadius: '10px',
+      },
+      '.scrollbar-thin::-webkit-scrollbar-track': {
+        backgroundColor: '#444',
+      },
+      '.scrollbar-thin': {
+        scrollbarWidth: 'thin',
+        scrollbarColor: '#666 #444',
+      },
+    };
+
+    addUtilities(newUtilities, ['responsive', 'hover']);
+  },],
 } satisfies Config
 
 export default config
