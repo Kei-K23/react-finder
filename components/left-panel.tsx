@@ -33,7 +33,7 @@ export default function LeftPanel({
   forwardHistory,
 }: LeftPanelProps) {
   return (
-    <div className="flex flex-col h-full w-full bg-gray-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-70 ">
+    <div className="flex flex-col h-full w-full bg-neutral-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-70 ">
       <WindowActionsContainer
         handleMouseDown={handleMouseDown}
         mainLayoutRef={mainLayoutRef}

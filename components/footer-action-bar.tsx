@@ -43,16 +43,18 @@ export default function FooterActionBar({
                 onClick={() => {
                   if (!isFinderOpen) {
                     // Click bounce animation
-                    gsap.to(buttonRef.current, {
-                      y: -50,
-                      duration: 0.3,
-                      onComplete: () => {
-                        gsap.to(buttonRef.current, {
-                          y: 0,
-                          duration: 0.2,
-                        });
-                      },
-                    });
+                    if (!isFinderMinimize) {
+                      gsap.to(buttonRef.current, {
+                        y: -50,
+                        duration: 0.3,
+                        onComplete: () => {
+                          gsap.to(buttonRef.current, {
+                            y: 0,
+                            duration: 0.2,
+                          });
+                        },
+                      });
+                    }
                     if (prevState === null) {
                       resetSize();
                       onOpen();
