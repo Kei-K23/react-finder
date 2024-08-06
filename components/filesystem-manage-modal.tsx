@@ -32,7 +32,8 @@ const formSchema = z.object({
 });
 
 export default function FilesystemManageModal() {
-  const { addNewNode, currentSelectedNode } = useFilesystemStore();
+  const { addNewNode, currentSelectedNode, setCurrentSelectedNode } =
+    useFilesystemStore();
   const { isOpen, onClose, node, type } = useFilesystemManageModalStore();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,6 +52,12 @@ export default function FilesystemManageModal() {
         : { name: values.name, nodes: [] };
 
     addNewNode(currentSelectedNode?.name!, newNode);
+    const newCurrentSelectedNode = {
+      name: currentSelectedNode.name,
+      nodes: [...currentSelectedNode?.nodes!, newNode],
+    };
+
+    setCurrentSelectedNode(newCurrentSelectedNode);
     form.reset();
     onClose();
   }

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -9,7 +9,7 @@ import { Node } from "@/type";
 import LeftPanel from "./left-panel";
 import RightPanel from "./right-panel";
 import { useFinderState } from "@/store/use-finder-state";
-import { NODES } from "@/constant";
+import { useFilesystemStore } from "@/store/use-filesystem-store";
 
 type FinderProps = {
   handleMouseDown: (e: React.MouseEvent) => void;
@@ -34,6 +34,15 @@ export default function Finder({
   width,
   height,
 }: FinderProps) {
+  const { nodes, setCurrentSelectedNode, currentSelectedNode } =
+    useFilesystemStore();
+
+  useEffect(() => {
+    // TODO: Check to find better way to handle this state
+    // Update the current selected node value
+    setSelectedNode(currentSelectedNode);
+  }, [nodes, currentSelectedNode]);
+
   const { finderMinimizeState } = useFinderState();
 
   const [backHistory, setBackHistory] = useState<Node[]>(
@@ -43,7 +52,7 @@ export default function Finder({
     finderMinimizeState?.forwardHistory || []
   );
   const [selectedNode, setSelectedNode] = useState<Node | null>(
-    finderMinimizeState?.selectedNode || null
+    finderMinimizeState?.selectedNode || currentSelectedNode
   );
 
   const handleNodeClick = (node: Node) => {
@@ -53,6 +62,7 @@ export default function Finder({
     setBackHistory((prevHistory) => [...prevHistory, selectedNode!]);
     setForwardHistory([]);
     setSelectedNode(node);
+    setCurrentSelectedNode(node);
   };
 
   const handlePrevClick = () => {
@@ -82,7 +92,7 @@ export default function Finder({
     >
       <ResizablePanel defaultSize={20}>
         <LeftPanel
-          nodes={NODES}
+          nodes={nodes}
           handleNodeClick={handleNodeClick}
           handleMouseDown={handleMouseDown}
           mainLayoutRef={mainLayoutRef}

@@ -21,7 +21,7 @@ export const useFilesystemStore = create<UseFilesystemStoreType>()(
             nodes: NODES,
             currentSelectedNode: null,
             addNewNode: (parentNodeName: string, newNode: Node) => set((state) => ({
-                nodes: addNode(state.nodes, parentNodeName, newNode)
+                nodes: addNode(state.nodes, parentNodeName, newNode),
             })),
             updateNode: (nodeName: string, updatedNode: Partial<Node>) => set((state) => ({
                 nodes: updateNode(state.nodes, nodeName, updatedNode)
