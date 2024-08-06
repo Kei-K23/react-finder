@@ -1,3 +1,4 @@
+import { Node } from "@/type";
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -14,3 +15,41 @@ export function calculateRightPanelDefaultSize(width: number) {
     return 20;
   }
 }
+
+// Utility function to find and add a node
+export const addNode = (nodes: Node[], parentNodeName: string, newNode: Node): Node[] => {
+  return nodes.map(node => {
+    if (node.name === parentNodeName) {
+      return { ...node, nodes: [...node.nodes, newNode] };
+    } else if (node.nodes.length > 0) {
+      return { ...node, nodes: addNode(node.nodes, parentNodeName, newNode) };
+    }
+    return node;
+  });
+};
+
+// Utility function to find and update a node 
+export const updateNode = (nodes: Node[], nodeName: string, updatedNode: Partial<Node>): Node[] => {
+  return nodes.map(node => {
+    if (node.name === nodeName) {
+      return { ...node, ...updatedNode };
+    } else if (node.nodes.length > 0) {
+      return { ...node, nodes: updateNode(node.nodes, nodeName, updatedNode) };
+    }
+    return node;
+  });
+};
+
+// Utility function to find and delete a node
+export const deleteNode = (nodes: Node[], nodeName: string): Node[] => {
+  return nodes
+    .map(node => {
+      if (node.name === nodeName) {
+        return null;
+      } else if (node.nodes.length > 0) {
+        return { ...node, nodes: deleteNode(node.nodes, nodeName) };
+      }
+      return node;
+    })
+    .filter(node => node !== null) as Node[];
+};

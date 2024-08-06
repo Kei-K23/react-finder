@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -9,81 +9,7 @@ import { Node } from "@/type";
 import LeftPanel from "./left-panel";
 import RightPanel from "./right-panel";
 import { useFinderState } from "@/store/use-finder-state";
-
-const nodes: Node[] = [
-  {
-    name: "Recents",
-    nodes: [
-      {
-        name: "ScreenShort",
-        nodes: [],
-      },
-    ],
-  },
-  {
-    name: "Home",
-    nodes: [
-      {
-        name: "Movies",
-        nodes: [
-          {
-            name: "Action",
-            nodes: [
-              {
-                name: "2000s",
-                nodes: [
-                  { name: "Gladiator.mp4" },
-                  { name: "The-Dark-Knight.mp4" },
-                ],
-              },
-              { name: "2010s", nodes: [] },
-            ],
-          },
-          {
-            name: "Comedy",
-            nodes: [{ name: "2000s", nodes: [{ name: "Superbad.mp4" }] }],
-          },
-          {
-            name: "Drama",
-            nodes: [
-              { name: "2000s", nodes: [{ name: "American-Beauty.mp4" }] },
-            ],
-          },
-        ],
-      },
-      {
-        name: "Music",
-        nodes: [
-          { name: "Rock", nodes: [] },
-          { name: "Classical", nodes: [] },
-        ],
-      },
-      { name: "Pictures", nodes: [] },
-      { name: "Codes", nodes: [] },
-      { name: "Projects", nodes: [] },
-      { name: "Games", nodes: [] },
-      { name: "Notes", nodes: [] },
-      { name: "Test", nodes: [] },
-      { name: "Homeworks", nodes: [] },
-      {
-        name: "Documents",
-        nodes: [],
-      },
-      { name: "passwords.txt" },
-      { name: "myNotes.txt" },
-      { name: "email.txt" },
-    ],
-  },
-  {
-    name: "Desktop",
-    nodes: [
-      {
-        name: "Programs",
-        nodes: [],
-      },
-    ],
-  },
-];
+import { useFilesystemStore } from "@/store/use-filesystem-store";
 
 type FinderProps = {
   handleMouseDown: (e: React.MouseEvent) => void;
@@ -108,6 +34,7 @@ export default function Finder({
   width,
   height,
 }: FinderProps) {
+  const { nodes } = useFilesystemStore();
   const { finderMinimizeState } = useFinderState();
 
   const [backHistory, setBackHistory] = useState<Node[]>(
