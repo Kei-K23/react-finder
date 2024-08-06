@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -9,7 +9,7 @@ import { Node } from "@/type";
 import LeftPanel from "./left-panel";
 import RightPanel from "./right-panel";
 import { useFinderState } from "@/store/use-finder-state";
-import { useFilesystemStore } from "@/store/use-filesystem-store";
+import { NODES } from "@/constant";
 
 type FinderProps = {
   handleMouseDown: (e: React.MouseEvent) => void;
@@ -34,7 +34,6 @@ export default function Finder({
   width,
   height,
 }: FinderProps) {
-  const { nodes, setCurrentSelectedNode } = useFilesystemStore();
   const { finderMinimizeState } = useFinderState();
 
   const [backHistory, setBackHistory] = useState<Node[]>(
@@ -54,7 +53,6 @@ export default function Finder({
     setBackHistory((prevHistory) => [...prevHistory, selectedNode!]);
     setForwardHistory([]);
     setSelectedNode(node);
-    setCurrentSelectedNode(node);
   };
 
   const handlePrevClick = () => {
@@ -84,7 +82,7 @@ export default function Finder({
     >
       <ResizablePanel defaultSize={20}>
         <LeftPanel
-          nodes={nodes}
+          nodes={NODES}
           handleNodeClick={handleNodeClick}
           handleMouseDown={handleMouseDown}
           mainLayoutRef={mainLayoutRef}
