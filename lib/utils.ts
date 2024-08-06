@@ -20,10 +20,14 @@ export function calculateRightPanelDefaultSize(width: number) {
 export const addNode = (nodes: Node[], parentNodeName: string, newNode: Node): Node[] => {
   return nodes.map(node => {
     if (node.name === parentNodeName) {
-      return { ...node, nodes: [...node.nodes, newNode] };
-    } else if (node.nodes.length > 0) {
-      return { ...node, nodes: addNode(node.nodes, parentNodeName, newNode) };
+      //@ts-ignore
+      return { ...node, nodes: [...node?.nodes, newNode] };
+      //@ts-ignore
+    } else if (node?.nodes?.length > 0) {
+      //@ts-ignore
+      return { ...node, nodes: addNode(node?.nodes, parentNodeName, newNode) };
     }
+
     return node;
   });
 };
@@ -33,8 +37,10 @@ export const updateNode = (nodes: Node[], nodeName: string, updatedNode: Partial
   return nodes.map(node => {
     if (node.name === nodeName) {
       return { ...node, ...updatedNode };
-    } else if (node.nodes.length > 0) {
-      return { ...node, nodes: updateNode(node.nodes, nodeName, updatedNode) };
+      //@ts-ignore
+    } else if (node?.nodes?.length > 0) {
+      //@ts-ignore
+      return { ...node, nodes: updateNode(node?.nodes, nodeName, updatedNode) };
     }
     return node;
   });
@@ -46,7 +52,9 @@ export const deleteNode = (nodes: Node[], nodeName: string): Node[] => {
     .map(node => {
       if (node.name === nodeName) {
         return null;
+        //@ts-ignore
       } else if (node.nodes.length > 0) {
+        //@ts-ignore
         return { ...node, nodes: deleteNode(node.nodes, nodeName) };
       }
       return node;

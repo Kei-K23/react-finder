@@ -49,7 +49,10 @@ export default function FilesystemManageModal() {
       type === FilesystemCreateType.FILE
         ? { name: values.name }
         : { name: values.name, nodes: [] };
+
     addNewNode(currentSelectedNode?.name!, newNode);
+    form.reset();
+    onClose();
   }
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
