@@ -98,4 +98,5 @@ body {
   .drop-shadow-3xl {
     filter: drop-shadow(0 27px 27px rgb(0 0 0 / 0.6));
   }
+
 }

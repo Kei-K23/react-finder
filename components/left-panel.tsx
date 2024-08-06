@@ -2,6 +2,7 @@ import React from "react";
 import WindowActionsContainer from "./window-actions-container";
 import { Node } from "@/type";
 import LeftPanelNodeItem from "./left-panel-node-item";
+import FilesystemContextMenu from "./filesystem-context-menu";
 
 type LeftPanelProps = {
   nodes: Node[];
@@ -49,12 +50,14 @@ export default function LeftPanel({
       <p className="text-xs text-neutral-300 p-2 select-none">Favorites</p>
       <ul className="select-none p-2">
         {nodes.map((node) => (
-          <LeftPanelNodeItem
-            key={node.name}
-            node={node}
-            selectedNode={selectedNode}
-            handleNodeClick={handleNodeClick}
-          />
+          <FilesystemContextMenu key={node.name}>
+            <LeftPanelNodeItem
+              key={node.name}
+              node={node}
+              selectedNode={selectedNode}
+              handleNodeClick={handleNodeClick}
+            />
+          </FilesystemContextMenu>
         ))}
       </ul>
     </div>
