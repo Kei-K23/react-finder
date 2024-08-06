@@ -35,6 +35,7 @@ export default function FilesystemManageModal() {
   const { addNewNode, currentSelectedNode, setCurrentSelectedNode } =
     useFilesystemStore();
   const { isOpen, onClose, node, type } = useFilesystemManageModalStore();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

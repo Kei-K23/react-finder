@@ -48,12 +48,13 @@ export const updateNode = (nodes: Node[], nodeName: string, updatedNode: Partial
 
 // Utility function to find and delete a node
 export const deleteNode = (nodes: Node[], nodeName: string): Node[] => {
+  console.log(nodeName);
   return nodes
     .map(node => {
       if (node.name === nodeName) {
         return null;
         //@ts-ignore
-      } else if (node.nodes.length > 0) {
+      } else if (node?.nodes?.length > 0) {
         //@ts-ignore
         return { ...node, nodes: deleteNode(node.nodes, nodeName) };
       }

@@ -34,7 +34,7 @@ export default function Finder({
   width,
   height,
 }: FinderProps) {
-  const { nodes, setCurrentSelectedNode, currentSelectedNode } =
+  const { nodes, currentSelectedNode, setCurrentSelectedNode } =
     useFilesystemStore();
 
   useEffect(() => {
@@ -61,8 +61,8 @@ export default function Finder({
     }
     setBackHistory((prevHistory) => [...prevHistory, selectedNode!]);
     setForwardHistory([]);
-    setSelectedNode(node);
     setCurrentSelectedNode(node);
+    setSelectedNode(node);
   };
 
   const handlePrevClick = () => {
@@ -82,6 +82,7 @@ export default function Finder({
     const nextNode = forwardHistory[0];
     setForwardHistory((prevHistory) => prevHistory.slice(1));
     setBackHistory((prevHistory) => [...prevHistory, selectedNode!]);
+
     setSelectedNode(nextNode);
   };
 

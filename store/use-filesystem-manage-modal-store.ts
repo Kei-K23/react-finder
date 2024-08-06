@@ -6,18 +6,28 @@ export enum FilesystemCreateType {
     FILE
 }
 
+export enum FilesystemActions {
+    CREATE,
+    UPDATE,
+    DELETE
+}
+
 type UseFilesystemManageModalStoreType = {
     node: Node | null;
     type: FilesystemCreateType;
+    action: FilesystemActions;
     isOpen: boolean;
     onOpen: (type: FilesystemCreateType, node?: Node) => void;
+    setAction: (action: FilesystemActions) => void;
     onClose: () => void;
 }
 
 export const useFilesystemManageModalStore = create<UseFilesystemManageModalStoreType>((set) => ({
     node: null,
     type: FilesystemCreateType.FOLDER,
+    action: FilesystemActions.CREATE,
     isOpen: false,
     onOpen: (type: FilesystemCreateType, node?: Node) => set({ isOpen: true, node, type }),
+    setAction: (action: FilesystemActions) => set({ action }),
     onClose: () => set({ isOpen: false, node: null }),
 }));

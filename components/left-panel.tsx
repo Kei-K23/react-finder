@@ -50,7 +50,7 @@ export default function LeftPanel({
       <p className="text-xs text-neutral-300 p-2 select-none">Favorites</p>
       <ul className="select-none p-2">
         {nodes.map((node) => (
-          <FilesystemContextMenu key={node.name}>
+          <FilesystemContextMenu currentNode={node} key={node.name}>
             <LeftPanelNodeItem
               key={node.name}
               node={node}

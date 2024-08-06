@@ -12,7 +12,13 @@ export default function RightPanelNodeItem({
   handleNodeClick,
 }: RightPanelNodeItemProps) {
   return (
-    <li key={node.name} onDoubleClick={() => handleNodeClick(node)}>
+    <li
+      key={node.name}
+      onDoubleClick={(e) => {
+        e.stopPropagation();
+        handleNodeClick(node);
+      }}
+    >
       <div className="flex items-center flex-col gap-1">
         {node.nodes ? (
           <Folder className="size-16 fill-blue-400 text-blue-400" />
