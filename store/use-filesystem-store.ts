@@ -7,6 +7,8 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 // Define the type for the state
 type UseFilesystemStoreType = {
     nodes: Node[];
+    currentSelectedNode: Node | null;
+    setCurrentSelectedNode: (node: Node) => void;
     addNewNode: (parentNodeName: string, newNode: Node) => void;
     updateNode: (nodeName: string, updatedNode: Partial<Node>) => void;
     deleteNode: (nodeName: string) => void;
@@ -17,6 +19,7 @@ export const useFilesystemStore = create<UseFilesystemStoreType>()(
     persist(
         (set) => ({
             nodes: NODES,
+            currentSelectedNode: null,
             addNewNode: (parentNodeName: string, newNode: Node) => set((state) => ({
                 nodes: addNode(state.nodes, parentNodeName, newNode)
             })),
@@ -26,6 +29,7 @@ export const useFilesystemStore = create<UseFilesystemStoreType>()(
             deleteNode: (nodeName: string) => set((state) => ({
                 nodes: deleteNode(state.nodes, nodeName)
             })),
+            setCurrentSelectedNode: (node: Node) => set({ currentSelectedNode: node })
         }),
         {
             name: 'react-finder-filesystems-storage',

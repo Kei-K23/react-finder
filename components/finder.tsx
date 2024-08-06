@@ -34,7 +34,7 @@ export default function Finder({
   width,
   height,
 }: FinderProps) {
-  const { nodes } = useFilesystemStore();
+  const { nodes, setCurrentSelectedNode } = useFilesystemStore();
   const { finderMinimizeState } = useFinderState();
 
   const [backHistory, setBackHistory] = useState<Node[]>(
@@ -54,6 +54,7 @@ export default function Finder({
     setBackHistory((prevHistory) => [...prevHistory, selectedNode!]);
     setForwardHistory([]);
     setSelectedNode(node);
+    setCurrentSelectedNode(node);
   };
 
   const handlePrevClick = () => {
