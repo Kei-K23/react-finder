@@ -123,11 +123,11 @@ export default function RightPanel({
                 ))}
               </ul>
             ) : selectedNode?.name ? (
-              <div className="h-full w-full flex justify-center items-center">
+              <div className="w-full mt-[20%] flex justify-center items-center">
                 <p className="text-muted-foreground">No item found</p>
               </div>
             ) : (
-              <div className="h-full w-full flex justify-center items-center">
+              <div className="w-full mt-[20%] flex justify-center items-center">
                 <p className="text-muted-foreground">Select a folder</p>
               </div>
             )}

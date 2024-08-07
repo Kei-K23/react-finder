@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  FilesystemActions,
   FilesystemCreateType,
   useFilesystemManageModalStore,
 } from "@/store/use-filesystem-manage-modal-store";
@@ -32,9 +33,15 @@ const formSchema = z.object({
 });
 
 export default function FilesystemManageModal() {
-  const { addNewNode, currentSelectedNode, setCurrentSelectedNode } =
-    useFilesystemStore();
-  const { isOpen, onClose, node, type } = useFilesystemManageModalStore();
+  const {
+    addNewNode,
+    updateNode,
+    currentSelectedNode,
+    setCurrentSelectedNode,
+  } = useFilesystemStore();
+
+  const { isOpen, onClose, node, type, action } =
+    useFilesystemManageModalStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,23 +54,47 @@ export default function FilesystemManageModal() {
     if (!currentSelectedNode) {
       return;
     }
+
     const newNode =
       type === FilesystemCreateType.FILE
         ? { name: values.name }
         : { name: values.name, nodes: [] };
 
-    addNewNode(currentSelectedNode?.name!, newNode);
-    const newCurrentSelectedNode = {
-      name: currentSelectedNode.name,
-      nodes: [...currentSelectedNode?.nodes!, newNode],
-    };
+    if (action === FilesystemActions.CREATE) {
+      addNewNode(currentSelectedNode?.name!, newNode);
+      const newCurrentSelectedNode = {
+        name: currentSelectedNode.name,
+        nodes: [...currentSelectedNode?.nodes!, newNode],
+      };
 
-    setCurrentSelectedNode(newCurrentSelectedNode);
-    form.reset();
-    onClose();
+      setCurrentSelectedNode(newCurrentSelectedNode);
+      form.reset();
+      onClose();
+      return;
+    }
+
+    if (action === FilesystemActions.UPDATE) {
+      updateNode(currentSelectedNode?.name!, newNode);
+
+      const newCurrentSelectedNode = {
+        name: newNode.name,
+        nodes: [...currentSelectedNode?.nodes!],
+      };
+
+      setCurrentSelectedNode(newCurrentSelectedNode);
+      form.reset();
+      onClose();
+      return;
+    }
   }
+
+  const open =
+    isOpen &&
+    (action === FilesystemActions.CREATE ||
+      action === FilesystemActions.UPDATE);
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="bg-neutral-700 bg-clip-padding backdrop-filter flex items-center flex-col backdrop-blur-xl bg-opacity-100 select-none text-neutral-100 border-gray-500">
         <DialogHeader>
           <DialogTitle>

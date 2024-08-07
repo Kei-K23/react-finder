@@ -12,6 +12,7 @@ import {
 } from "@/store/use-filesystem-manage-modal-store";
 import { useFilesystemStore } from "@/store/use-filesystem-store";
 import { Node } from "@/type";
+import { PERMANENT_FOLDER } from "@/constant";
 
 type FilesystemContextMenuProps = {
   children: React.ReactNode;
@@ -26,6 +27,7 @@ export default function FilesystemContextMenu({
 }: FilesystemContextMenuProps) {
   const { currentSelectedNode, setCurrentSelectedNode } = useFilesystemStore();
   const { onOpen, setAction } = useFilesystemManageModalStore();
+
   return (
     <ContextMenu>
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
@@ -50,24 +52,27 @@ export default function FilesystemContextMenu({
         </ContextMenuItem>
         {isModifiable && (
           <>
-            <ContextMenuItem
-              onClick={() => {
-                setAction(FilesystemActions.DELETE);
-                onOpen(
-                  currentNode.nodes
-                    ? FilesystemCreateType.FOLDER
-                    : FilesystemCreateType.FILE,
-                  currentNode
-                );
-              }}
-            >
-              Delete
-            </ContextMenuItem>
+            {!PERMANENT_FOLDER.includes(currentSelectedNode?.name!) && (
+              <ContextMenuItem
+                onClick={() => {
+                  setAction(FilesystemActions.DELETE);
+                  onOpen(
+                    currentNode.nodes
+                      ? FilesystemCreateType.FOLDER
+                      : FilesystemCreateType.FILE,
+                    currentNode
+                  );
+                }}
+              >
+                Delete
+              </ContextMenuItem>
+            )}
             <ContextMenuItem
               onClick={() => {
                 if (!currentSelectedNode) {
                   return;
                 }
+
                 setAction(FilesystemActions.UPDATE);
                 onOpen(
                   currentNode.nodes
