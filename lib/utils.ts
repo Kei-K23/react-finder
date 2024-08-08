@@ -62,3 +62,16 @@ export const deleteNode = (nodes: Node[], nodeName: string): Node[] => {
     })
     .filter(node => node !== null) as Node[];
 };
+
+export const getFileExtension = (filename: string) => {
+  // Split the filename by the dot character
+  const parts = filename.split('.');
+
+  // If there's no dot in the filename, return an empty string
+  if (parts.length === 1) {
+    return '';
+  }
+
+  // Return the last part after the last dot
+  return `${parts.pop()}`;
+};

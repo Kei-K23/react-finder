@@ -1,5 +1,6 @@
+import useGetIconBasedOnFileExtension from "@/hooks/use-get-icon-based-on-file-extension";
 import { Node } from "@/type";
-import { File, Folder } from "lucide-react";
+import { Folder } from "lucide-react";
 import React from "react";
 
 type RightPanelNodeItemProps = {
@@ -11,6 +12,7 @@ export default function RightPanelNodeItem({
   node,
   handleNodeClick,
 }: RightPanelNodeItemProps) {
+  const IconNode = useGetIconBasedOnFileExtension(node.name);
   return (
     <li
       key={node.name}
@@ -23,7 +25,7 @@ export default function RightPanelNodeItem({
         {node.nodes ? (
           <Folder className="size-16 fill-blue-400 text-blue-400" />
         ) : (
-          <File className="size-16 fill-gray-200" />
+          <IconNode className="size-16 fill-gray-200" />
         )}
         <span className=" text-wrap text-[13px] text-neutral-100">
           {node.name}

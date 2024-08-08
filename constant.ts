@@ -83,3 +83,4 @@ export const DEFAULT_SIZE_FOR_FINDER = {
 export const PERMANENT_FOLDER = ['Home', 'Desktop', 'Recents'];
 
 export const AVAILABLE_WALLPAPERS = ['/wallpaper_1.jpg', '/wallpaper_2.jpg', '/wallpaper_3.jpg'];
+
