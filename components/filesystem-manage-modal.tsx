@@ -34,26 +34,21 @@ const formSchema = z.object({
 });
 
 export default function FilesystemManageModal() {
-  const {
-    addNewNode,
-    updateNode,
-    currentSelectedNode,
-    setCurrentSelectedNode,
-  } = useFilesystemStore();
-  const { rightClickState, setRightClickState } =
-    useRightClickFilesystemStore();
+  const { addNewNode, updateNode, setCurrentSelectedNode } =
+    useFilesystemStore();
+  const { setRightClickState } = useRightClickFilesystemStore();
   const { isOpen, onClose, node, type, action } =
     useFilesystemManageModalStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: rightClickState?.name || "",
+      name: node?.name || "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!currentSelectedNode) {
+    if (!node) {
       return;
     }
 
@@ -63,12 +58,13 @@ export default function FilesystemManageModal() {
         : { name: values.name, nodes: [] };
 
     if (action === FilesystemActions.CREATE) {
-      addNewNode(currentSelectedNode?.name!, newNode);
+      addNewNode(node?.name!, newNode);
       const newCurrentSelectedNode = {
-        name: currentSelectedNode.name,
-        nodes: [...currentSelectedNode?.nodes!, newNode],
+        name: node.name,
+        nodes: [...node?.nodes!, newNode],
       };
 
+      // TODO: Need to add logic to setup current node correctly for pre and next buttons
       setCurrentSelectedNode(newCurrentSelectedNode);
       setRightClickState(null);
       form.reset();
@@ -77,11 +73,11 @@ export default function FilesystemManageModal() {
     }
 
     if (action === FilesystemActions.UPDATE) {
-      updateNode(currentSelectedNode?.name!, newNode);
+      updateNode(node?.name!, newNode);
 
       const newCurrentSelectedNode = {
         name: newNode.name,
-        nodes: [...currentSelectedNode?.nodes!],
+        nodes: [...node?.nodes!],
       };
 
       setCurrentSelectedNode(newCurrentSelectedNode);

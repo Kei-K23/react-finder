@@ -87,6 +87,7 @@ export default function Finder({
     setCurrentSelectedNode(nextNode);
     setSelectedNode(nextNode);
   };
+
   return (
     <ResizablePanelGroup
       direction="horizontal"

@@ -22,16 +22,22 @@ export default function FilesystemContextMenu({
   children,
   isModifiable = true,
 }: FilesystemContextMenuProps) {
-  const { onOpen, setAction } = useFilesystemManageModalStore();
+  const { onOpen, setAction, setNode } = useFilesystemManageModalStore();
   const { rightClickState, setRightClickState, setTempRightClickState } =
     useRightClickFilesystemStore();
   const isFile = !rightClickState?.nodes;
+
   return (
     <ContextMenu
       onOpenChange={(e) => {
         if (!e) {
+          // Setting null to setRightClickState will no update immediately because useState is sync
           setRightClickState(null);
           setTempRightClickState(null);
+
+          if (rightClickState) {
+            setNode(rightClickState!);
+          }
         }
       }}
     >
