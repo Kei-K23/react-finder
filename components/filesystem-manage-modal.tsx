@@ -52,12 +52,12 @@ export default function FilesystemManageModal() {
       return;
     }
 
-    const newNode =
-      type === FilesystemCreateType.FILE
-        ? { name: values.name }
-        : { name: values.name, nodes: [] };
-
     if (action === FilesystemActions.CREATE) {
+      const newNode =
+        type === FilesystemCreateType.FILE
+          ? { name: values.name }
+          : { name: values.name, nodes: [] };
+
       addNewNode(node?.name!, newNode);
       const newCurrentSelectedNode = {
         name: node.name,
@@ -73,6 +73,11 @@ export default function FilesystemManageModal() {
     }
 
     if (action === FilesystemActions.UPDATE) {
+      const newNode =
+        type === FilesystemCreateType.FILE
+          ? { name: values.name }
+          : { name: values.name, nodes: node.nodes };
+
       updateNode(node?.name!, newNode);
 
       const newCurrentSelectedNode = {
