@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import { Button } from "./ui/button";
 import { Minus, X } from "lucide-react";
 import { useFinderState } from "@/store/use-finder-state";
@@ -6,6 +6,7 @@ import { RiExpandDiagonal2Fill } from "react-icons/ri";
 import useResizeWindow from "@/hooks/use-resize-window";
 import { Node } from "@/type";
 import { useFinderStateMinimize } from "@/store/use-finder-minimize-state";
+import { useFilesystemStore } from "@/store/use-filesystem-store";
 
 type WindowActionsContainerProps = {
   handleMouseDown: (e: React.MouseEvent) => void;
@@ -32,6 +33,7 @@ export default function WindowActionsContainer({
   backHistory,
   forwardHistory,
 }: WindowActionsContainerProps) {
+  const { currentSelectedNode } = useFilesystemStore();
   const { onClose, onOpen, setFinderMinimizeState } = useFinderState();
   const { finderMinimizeOpen, finderMinimizeClose, isFinderMinimize } =
     useFinderStateMinimize();
@@ -60,7 +62,7 @@ export default function WindowActionsContainer({
         },
         backHistory,
         forwardHistory,
-        selectedNode,
+        selectedNode: currentSelectedNode,
       });
       onClose();
     }

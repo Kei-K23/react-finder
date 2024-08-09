@@ -52,7 +52,7 @@ export default function Finder({
     finderMinimizeState?.forwardHistory || []
   );
   const [selectedNode, setSelectedNode] = useState<Node | null>(
-    finderMinimizeState?.selectedNode || currentSelectedNode
+    currentSelectedNode
   );
 
   const handleNodeClick = (node: Node) => {
