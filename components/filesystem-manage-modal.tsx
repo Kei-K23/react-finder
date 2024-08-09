@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useFilesystemStore } from "@/store/use-filesystem-store";
+import { useRightClickFilesystemStore } from "@/store/use-right-click-filesystem-store";
 
 const formSchema = z.object({
   name: z.string().min(1).max(50),
@@ -39,14 +40,15 @@ export default function FilesystemManageModal() {
     currentSelectedNode,
     setCurrentSelectedNode,
   } = useFilesystemStore();
-
+  const { rightClickState, setRightClickState } =
+    useRightClickFilesystemStore();
   const { isOpen, onClose, node, type, action } =
     useFilesystemManageModalStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: node?.name || "",
+      name: rightClickState?.name || "",
     },
   });
 
@@ -68,6 +70,7 @@ export default function FilesystemManageModal() {
       };
 
       setCurrentSelectedNode(newCurrentSelectedNode);
+      setRightClickState(null);
       form.reset();
       onClose();
       return;
@@ -82,6 +85,7 @@ export default function FilesystemManageModal() {
       };
 
       setCurrentSelectedNode(newCurrentSelectedNode);
+      setRightClickState(null);
       form.reset();
       onClose();
       return;

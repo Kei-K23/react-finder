@@ -6,6 +6,7 @@ import useWidthChange from "@/hooks/use-width-change";
 import { cn } from "@/lib/utils";
 import FilesystemContextMenu from "./filesystem-context-menu";
 import { useFilesystemStore } from "@/store/use-filesystem-store";
+import { useRightClickFilesystemStore } from "@/store/use-right-click-filesystem-store";
 
 type RightPanelProps = {
   selectedNode: Node | null;
@@ -38,7 +39,13 @@ export default function RightPanel({
 }: RightPanelProps) {
   const rightPanelRef = useRef<HTMLDivElement | null>(null);
   const { width: rightPanelWidth } = useWidthChange(rightPanelRef);
+  const { setRightClickState, tempRightClickState, setTempRightClickState } =
+    useRightClickFilesystemStore();
   const { currentSelectedNode } = useFilesystemStore();
+
+  const handleRightClick = (node: Node | null) => {
+    setTempRightClickState(node);
+  };
 
   return (
     <div className="flex w-full h-full flex-col bg-neutral-800">
@@ -55,8 +62,16 @@ export default function RightPanel({
         setHeight={setHeight}
         setWidth={setWidth}
       />
-      <FilesystemContextMenu currentNode={currentSelectedNode!}>
-        <div ref={rightPanelRef} className="flex flex-col h-[3000px]">
+      <FilesystemContextMenu>
+        <div
+          onContextMenu={(e) => {
+            if (!e.defaultPrevented) {
+              setRightClickState(currentSelectedNode);
+            }
+          }}
+          ref={rightPanelRef}
+          className="flex flex-col h-[3000px]"
+        >
           <div className="w-full">
             {selectedNode?.nodes && selectedNode?.nodes?.length > 0 ? (
               <ul
@@ -113,11 +128,12 @@ export default function RightPanel({
                 )}
               >
                 {selectedNode?.nodes?.map((node) => (
-                  <FilesystemContextMenu key={node.name} currentNode={node}>
+                  <FilesystemContextMenu key={node.name}>
                     <RightPanelNodeItem
                       key={node.name}
                       node={node}
                       handleNodeClick={handleNodeClick}
+                      handleRightClick={handleRightClick}
                     />
                   </FilesystemContextMenu>
                 ))}

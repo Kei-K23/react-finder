@@ -37,6 +37,10 @@ export default function Finder({
   const { nodes, currentSelectedNode, setCurrentSelectedNode } =
     useFilesystemStore();
 
+  const [selectedNode, setSelectedNode] = useState<Node | null>(
+    currentSelectedNode
+  );
+
   useEffect(() => {
     // TODO: Check to find better way to handle this state
     // Update the current selected node value
@@ -50,9 +54,6 @@ export default function Finder({
   );
   const [forwardHistory, setForwardHistory] = useState<Node[]>(
     finderMinimizeState?.forwardHistory || []
-  );
-  const [selectedNode, setSelectedNode] = useState<Node | null>(
-    currentSelectedNode
   );
 
   const handleNodeClick = (node: Node) => {
@@ -73,6 +74,7 @@ export default function Finder({
     setBackHistory((prevHistory) => prevHistory.slice(0, -1));
     setForwardHistory((prevHistory) => [selectedNode!, ...prevHistory]);
     setSelectedNode(prevNode);
+    setCurrentSelectedNode(prevNode);
   };
 
   const handleNextClick = () => {
@@ -82,10 +84,9 @@ export default function Finder({
     const nextNode = forwardHistory[0];
     setForwardHistory((prevHistory) => prevHistory.slice(1));
     setBackHistory((prevHistory) => [...prevHistory, selectedNode!]);
-
+    setCurrentSelectedNode(nextNode);
     setSelectedNode(nextNode);
   };
-
   return (
     <ResizablePanelGroup
       direction="horizontal"
