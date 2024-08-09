@@ -25,7 +25,7 @@ export default function FilesystemContextMenu({
   const { onOpen, setAction } = useFilesystemManageModalStore();
   const { rightClickState, setRightClickState, setTempRightClickState } =
     useRightClickFilesystemStore();
-
+  const isFile = !rightClickState?.nodes;
   return (
     <ContextMenu
       onOpenChange={(e) => {
@@ -37,22 +37,26 @@ export default function FilesystemContextMenu({
     >
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
       <ContextMenuContent className="bg-neutral-700 bg-clip-padding backdrop-filter flex flex-col backdrop-blur-xl bg-opacity-100 select-none text-neutral-100 border-gray-500 cursor-pointer">
-        <ContextMenuItem
-          onClick={() => {
-            setAction(FilesystemActions.CREATE);
-            onOpen(FilesystemCreateType.FILE);
-          }}
-        >
-          new file
-        </ContextMenuItem>
-        <ContextMenuItem
-          onClick={() => {
-            setAction(FilesystemActions.CREATE);
-            onOpen(FilesystemCreateType.FOLDER);
-          }}
-        >
-          new folder
-        </ContextMenuItem>
+        {!isFile && (
+          <>
+            <ContextMenuItem
+              onClick={() => {
+                setAction(FilesystemActions.CREATE);
+                onOpen(FilesystemCreateType.FILE);
+              }}
+            >
+              new file
+            </ContextMenuItem>
+            <ContextMenuItem
+              onClick={() => {
+                setAction(FilesystemActions.CREATE);
+                onOpen(FilesystemCreateType.FOLDER);
+              }}
+            >
+              new folder
+            </ContextMenuItem>
+          </>
+        )}
         {isModifiable && (
           <>
             {!PERMANENT_FOLDER.includes(rightClickState?.name!) && (
