@@ -10,6 +10,7 @@ type UseFilesystemStoreType = {
     currentSelectedNode: Node | null;
     setCurrentSelectedNode: (node: Node) => void;
     addNewNode: (parentNodeName: string, newNode: Node) => void;
+    addNewNodeForLeft: (newNode: Node) => void;
     updateNode: (nodeName: string, updatedNode: Partial<Node>) => void;
     deleteNode: (nodeName: string) => void;
 }
@@ -22,6 +23,9 @@ export const useFilesystemStore = create<UseFilesystemStoreType>()(
             currentSelectedNode: null,
             addNewNode: (parentNodeName: string, newNode: Node) => set((state) => ({
                 nodes: addNode(state.nodes, parentNodeName, newNode),
+            })),
+            addNewNodeForLeft: (newNode: Node) => set((state) => ({
+                nodes: [...state.nodes, newNode]
             })),
             updateNode: (nodeName: string, updatedNode: Partial<Node>) => set((state) => ({
                 nodes: updateNode(state.nodes, nodeName, updatedNode)

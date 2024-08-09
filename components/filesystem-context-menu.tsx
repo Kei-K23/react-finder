@@ -23,8 +23,13 @@ export default function FilesystemContextMenu({
   isModifiable = true,
 }: FilesystemContextMenuProps) {
   const { onOpen, setAction, setNode } = useFilesystemManageModalStore();
-  const { rightClickState, setRightClickState, setTempRightClickState } =
-    useRightClickFilesystemStore();
+  const {
+    rightClickState,
+    setRightClickState,
+    setTempRightClickState,
+    setLeftState,
+    leftState,
+  } = useRightClickFilesystemStore();
   const isFile = !rightClickState?.nodes;
 
   return (
@@ -34,7 +39,7 @@ export default function FilesystemContextMenu({
           // Setting null to setRightClickState will no update immediately because useState is sync
           setRightClickState(null);
           setTempRightClickState(null);
-
+          setLeftState(false);
           if (rightClickState) {
             setNode(rightClickState!);
           }
@@ -43,7 +48,19 @@ export default function FilesystemContextMenu({
     >
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
       <ContextMenuContent className="bg-neutral-700 bg-clip-padding backdrop-filter flex flex-col backdrop-blur-xl bg-opacity-100 select-none text-neutral-100 border-gray-500 cursor-pointer">
-        {!isFile && (
+        {/* TODO: Fix logic here */}
+        {!isFile && leftState ? (
+          <>
+            <ContextMenuItem
+              onClick={() => {
+                setAction(FilesystemActions.CREATE);
+                onOpen(FilesystemCreateType.FOLDER);
+              }}
+            >
+              new folder
+            </ContextMenuItem>
+          </>
+        ) : (
           <>
             <ContextMenuItem
               onClick={() => {
@@ -65,41 +82,44 @@ export default function FilesystemContextMenu({
         )}
         {isModifiable && (
           <>
-            {!PERMANENT_FOLDER.includes(rightClickState?.name!) && (
+            {!PERMANENT_FOLDER.includes(rightClickState?.name!) &&
+              !leftState && (
+                <ContextMenuItem
+                  onClick={() => {
+                    if (!rightClickState) {
+                      return;
+                    }
+                    setAction(FilesystemActions.DELETE);
+                    onOpen(
+                      rightClickState?.nodes
+                        ? FilesystemCreateType.FOLDER
+                        : FilesystemCreateType.FILE,
+                      rightClickState!
+                    );
+                  }}
+                >
+                  Delete
+                </ContextMenuItem>
+              )}
+            {!leftState && (
               <ContextMenuItem
                 onClick={() => {
                   if (!rightClickState) {
                     return;
                   }
-                  setAction(FilesystemActions.DELETE);
+
+                  setAction(FilesystemActions.UPDATE);
                   onOpen(
-                    rightClickState?.nodes
+                    rightClickState.nodes
                       ? FilesystemCreateType.FOLDER
                       : FilesystemCreateType.FILE,
-                    rightClickState!
+                    rightClickState
                   );
                 }}
               >
-                Delete
+                Rename
               </ContextMenuItem>
             )}
-            <ContextMenuItem
-              onClick={() => {
-                if (!rightClickState) {
-                  return;
-                }
-
-                setAction(FilesystemActions.UPDATE);
-                onOpen(
-                  rightClickState.nodes
-                    ? FilesystemCreateType.FOLDER
-                    : FilesystemCreateType.FILE,
-                  rightClickState
-                );
-              }}
-            >
-              Rename
-            </ContextMenuItem>
           </>
         )}
       </ContextMenuContent>

@@ -28,4 +28,4 @@ In recently, I really like the UI style call `glassmorphism`. I always wanted to
 - [ ] Folder and file create, delete and rename
 - [ ] Sortable folders and files
 - [ ] Drag and drop every node
-- [ ] Add Sentry error management
+- [x] Add Sentry error management

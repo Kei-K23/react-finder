@@ -34,9 +34,10 @@ const formSchema = z.object({
 });
 
 export default function FilesystemManageModal() {
-  const { addNewNode, updateNode, setCurrentSelectedNode } =
+  const { addNewNode, addNewNodeForLeft, updateNode, setCurrentSelectedNode } =
     useFilesystemStore();
-  const { setRightClickState } = useRightClickFilesystemStore();
+  const { setRightClickState, leftState, setLeftState } =
+    useRightClickFilesystemStore();
   const { isOpen, onClose, node, type, action } =
     useFilesystemManageModalStore();
 
@@ -48,48 +49,62 @@ export default function FilesystemManageModal() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!node) {
-      return;
-    }
-
-    if (action === FilesystemActions.CREATE) {
-      const newNode =
+    if (leftState) {
+      const newNodeForLeft =
         type === FilesystemCreateType.FILE
           ? { name: values.name }
           : { name: values.name, nodes: [] };
 
-      addNewNode(node?.name!, newNode);
-      const newCurrentSelectedNode = {
-        name: node.name,
-        nodes: [...node?.nodes!, newNode],
-      };
-
-      // TODO: Need to add logic to setup current node correctly for pre and next buttons
-      setCurrentSelectedNode(newCurrentSelectedNode);
-      setRightClickState(null);
+      addNewNodeForLeft(newNodeForLeft);
       form.reset();
+      setLeftState(false);
       onClose();
       return;
-    }
+    } else {
+      if (!node) {
+        return;
+      }
 
-    if (action === FilesystemActions.UPDATE) {
-      const newNode =
-        type === FilesystemCreateType.FILE
-          ? { name: values.name }
-          : { name: values.name, nodes: node.nodes };
+      if (action === FilesystemActions.CREATE) {
+        const newNode =
+          type === FilesystemCreateType.FILE
+            ? { name: values.name }
+            : { name: values.name, nodes: [] };
+        addNewNode(node?.name!, newNode);
+        const newCurrentSelectedNode = {
+          name: node.name,
+          nodes: [...node?.nodes!, newNode],
+        };
 
-      updateNode(node?.name!, newNode);
+        // TODO: Need to add logic to setup current node correctly for pre and next buttons
+        setCurrentSelectedNode(newCurrentSelectedNode);
+        setRightClickState(null);
+        setLeftState(false);
+        form.reset();
+        onClose();
+        return;
+      }
 
-      const newCurrentSelectedNode = {
-        name: newNode.name,
-        nodes: [...node?.nodes!],
-      };
+      if (action === FilesystemActions.UPDATE) {
+        const newNode =
+          type === FilesystemCreateType.FILE
+            ? { name: values.name }
+            : { name: values.name, nodes: node.nodes };
 
-      setCurrentSelectedNode(newCurrentSelectedNode);
-      setRightClickState(null);
-      form.reset();
-      onClose();
-      return;
+        updateNode(node?.name!, newNode);
+
+        const newCurrentSelectedNode = {
+          name: newNode.name,
+          nodes: [...node?.nodes!],
+        };
+
+        // TODO: Implement logic to prevent from entering to the folder when updating
+        setCurrentSelectedNode(newCurrentSelectedNode);
+        setRightClickState(null);
+        form.reset();
+        onClose();
+        return;
+      }
     }
   }
 
