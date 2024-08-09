@@ -10,6 +10,7 @@ import React from "react";
 
 export default function Battery() {
   const { loading, level, charging, supported } = useBattery();
+  const batteryLevel = level! * 100;
   if (!supported) {
     return;
   }
@@ -22,12 +23,12 @@ export default function Battery() {
   }
   if (charging) {
     return (
-      <div>
+      <div className="flex items-center gap-2">
+        <span className="text-sm">{batteryLevel}%</span>
         <BatteryCharging className="text-emerald-400" />
       </div>
     );
   }
-  const batteryLevel = level! * 100;
   return (
     <div className="flex items-center gap-2">
       <span className="text-sm">{batteryLevel}%</span>
@@ -36,7 +37,6 @@ export default function Battery() {
       {batteryLevel > 0 && batteryLevel < 40 && (
         <BatteryLow className="text-yellow-400" />
       )}
-      {batteryLevel === 100 && <BatteryFull />}
     </div>
   );
 }
