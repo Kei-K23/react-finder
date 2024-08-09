@@ -39,7 +39,7 @@ export default function RightPanel({
 }: RightPanelProps) {
   const rightPanelRef = useRef<HTMLDivElement | null>(null);
   const { width: rightPanelWidth } = useWidthChange(rightPanelRef);
-  const { setRightClickState, tempRightClickState, setTempRightClickState } =
+  const { setRightClickState, setTempRightClickState } =
     useRightClickFilesystemStore();
   const { currentSelectedNode } = useFilesystemStore();
 
@@ -76,7 +76,7 @@ export default function RightPanel({
             {selectedNode?.nodes && selectedNode?.nodes?.length > 0 ? (
               <ul
                 className={cn(
-                  "grid grid-cols-2 gap-3 overflow-auto p-3 scrollbar-thin",
+                  "grid grid-cols-2 gap-1 overflow-auto p-3 scrollbar-thin",
                   rightPanelWidth > 400 &&
                     rightPanelWidth < 500 &&
                     "grid-cols-2",

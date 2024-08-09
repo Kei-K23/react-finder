@@ -1,4 +1,5 @@
 import useGetIconBasedOnFileExtension from "@/hooks/use-get-icon-based-on-file-extension";
+import { cn } from "@/lib/utils";
 import { useRightClickFilesystemStore } from "@/store/use-right-click-filesystem-store";
 import { Node } from "@/type";
 import { Folder } from "lucide-react";
@@ -15,7 +16,8 @@ export default function RightPanelNodeItem({
   handleNodeClick,
   handleRightClick,
 }: RightPanelNodeItemProps) {
-  const { setRightClickState } = useRightClickFilesystemStore();
+  const { setRightClickState, rightClickState } =
+    useRightClickFilesystemStore();
   const IconNode = useGetIconBasedOnFileExtension(node.name);
 
   return (
@@ -39,7 +41,12 @@ export default function RightPanelNodeItem({
         ) : (
           <IconNode className="size-16 fill-gray-200" />
         )}
-        <span className=" text-wrap text-[13px] text-neutral-100">
+        <span
+          className={cn(
+            "text-wrap text-[13px] text-neutral-100",
+            rightClickState?.name === node.name && "text-blue-500"
+          )}
+        >
           {node.name}
         </span>
       </div>
