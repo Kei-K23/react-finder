@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import WindowActionsContainer from "./window-actions-container";
 import { Node } from "@/type";
@@ -14,11 +16,12 @@ import {
   DragEndEvent,
 } from "@dnd-kit/core";
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { reorderNodes } from "@/lib/utils";
+import { useFilesystemStore } from "@/store/use-filesystem-store";
 
 type LeftPanelProps = {
   nodes: Node[];
@@ -51,13 +54,16 @@ export default function LeftPanel({
 }: LeftPanelProps) {
   const { setTempRightClickState, setLeftState } =
     useRightClickFilesystemStore();
+  const { nodes: storageNodes } = useFilesystemStore();
 
   const handleRightClick = (node: Node | null) => {
     setTempRightClickState(node);
   };
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: { delay: 100, tolerance: 100 },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -66,7 +72,14 @@ export default function LeftPanel({
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
-    console.log(active, over);
+    if (!active || !over || active.id === over.id) return;
+
+    const activeId = +active.id;
+    const overId = +over.id;
+
+    // Reorder the nodes based on the drag-and-drop operation
+    const reorderNodeResults = reorderNodes(storageNodes, activeId, overId);
+    console.log(reorderNodeResults);
   }
 
   return (
@@ -96,7 +109,9 @@ export default function LeftPanel({
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
+            onDragEnd={(e) => {
+              handleDragEnd(e);
+            }}
           >
             <SortableContext
               items={nodes}

@@ -1,4 +1,5 @@
 import { Node } from "@/type";
+import { DragEndEvent } from "@dnd-kit/core";
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -144,3 +145,54 @@ export const getNextOrderNumberAtTopLevel = (nodes: Node[]): number => {
     return 0; // If no nodes exist at the top level, the next order number should be 0
   }
 };
+
+export const findNodeById = (nodes: Node[], id: number): Node | undefined => {
+  for (const node of nodes) {
+    if (node.id === id) return node;
+    if (node.nodes) {
+      const found = findNodeById(node.nodes, id);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
+
+export const reorderNodes = (nodes: Node[], activeId: number, overId: number): Node[] => {
+  const activeNode = findNodeById(nodes, activeId);
+  const overNode = findNodeById(nodes, overId);
+
+  if (!activeNode || !overNode) return nodes;
+
+  const parentNode = findParentNode(nodes, activeId);
+  if (!parentNode || !parentNode.nodes) return nodes;
+
+  const siblings = parentNode.nodes;
+
+  // Remove active node from its current position
+  const activeIndex = siblings.findIndex(node => node.id === activeId);
+  const [removed] = siblings.splice(activeIndex, 1);
+
+  // Insert active node into the new position
+  const overIndex = siblings.findIndex(node => node.id === overId);
+  siblings.splice(overIndex, 0, removed);
+
+  // Reorder the nodes based on their new positions
+  siblings.forEach((node, index) => {
+    node.order = index;
+  });
+
+  return nodes;
+}
+
+function findParentNode(nodes: Node[], childId: number): Node | undefined {
+  for (const node of nodes) {
+    if (node.nodes && node.nodes.some(child => child.id === childId)) {
+      return node;
+    }
+    if (node.nodes) {
+      const found = findParentNode(node.nodes, childId);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
