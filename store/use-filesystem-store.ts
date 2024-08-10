@@ -1,5 +1,5 @@
 import { NODES } from '@/constant';
-import { addNode, deleteNode, updateNode } from '@/lib/utils';
+import { addNode, deleteNode, sortNodes, updateNode } from '@/lib/utils';
 import { Node } from '@/type';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
@@ -8,6 +8,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 type UseFilesystemStoreType = {
     nodes: Node[];
     currentSelectedNode: Node | null;
+    getNodes: () => Node[];
     setCurrentSelectedNode: (node: Node) => void;
     addNewNode: (parentNodeName: string, newNode: Node) => void;
     addNewNodeForLeft: (newNode: Node) => void;
@@ -18,14 +19,17 @@ type UseFilesystemStoreType = {
 // Correctly type the persisted state creator
 export const useFilesystemStore = create<UseFilesystemStoreType>()(
     persist(
-        (set) => ({
+        (set, get) => ({
             nodes: NODES,
             currentSelectedNode: null,
+            getNodes: () => {
+                return sortNodes(get().nodes || [])
+            },
             addNewNode: (parentNodeName: string, newNode: Node) => set((state) => ({
                 nodes: addNode(state.nodes, parentNodeName, newNode),
             })),
             addNewNodeForLeft: (newNode: Node) => set((state) => ({
-                nodes: [...state.nodes, newNode]
+                nodes: [...state.nodes, newNode,]
             })),
             updateNode: (nodeName: string, updatedNode: Partial<Node>) => set((state) => ({
                 nodes: updateNode(state.nodes, nodeName, updatedNode)

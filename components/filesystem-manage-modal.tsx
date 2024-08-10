@@ -28,14 +28,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { useFilesystemStore } from "@/store/use-filesystem-store";
 import { useRightClickFilesystemStore } from "@/store/use-right-click-filesystem-store";
+import { getNextOrderNumber, getNextOrderNumberAtTopLevel } from "@/lib/utils";
+import { NODES } from "@/constant";
 
 const formSchema = z.object({
   name: z.string().min(1).max(50),
 });
 
 export default function FilesystemManageModal() {
-  const { addNewNode, addNewNodeForLeft, updateNode, setCurrentSelectedNode } =
-    useFilesystemStore();
+  const {
+    addNewNode,
+    addNewNodeForLeft,
+    updateNode,
+    setCurrentSelectedNode,
+    nodes: storageNodes,
+  } = useFilesystemStore();
   const { setRightClickState, leftState, setLeftState } =
     useRightClickFilesystemStore();
   const { isOpen, onClose, node, type, action } =
@@ -49,11 +56,14 @@ export default function FilesystemManageModal() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    // Create file in the left side of finder
     if (leftState) {
+      const nextOrderNumberForTopLevel =
+        getNextOrderNumberAtTopLevel(storageNodes);
       const newNodeForLeft =
         type === FilesystemCreateType.FILE
-          ? { name: values.name }
-          : { name: values.name, nodes: [] };
+          ? { name: values.name, order: nextOrderNumberForTopLevel }
+          : { name: values.name, nodes: [], order: nextOrderNumberForTopLevel };
 
       addNewNodeForLeft(newNodeForLeft);
       form.reset();
@@ -66,14 +76,19 @@ export default function FilesystemManageModal() {
       }
 
       if (action === FilesystemActions.CREATE) {
+        const nextNewOrderNumber = getNextOrderNumber(storageNodes, node.name);
+
         const newNode =
           type === FilesystemCreateType.FILE
-            ? { name: values.name }
-            : { name: values.name, nodes: [] };
+            ? { name: values.name, order: nextNewOrderNumber }
+            : { name: values.name, nodes: [], order: nextNewOrderNumber };
+
         addNewNode(node?.name!, newNode);
+
         const newCurrentSelectedNode = {
           name: node.name,
           nodes: [...node?.nodes!, newNode],
+          order: node.order,
         };
 
         // TODO: Need to add logic to setup current node correctly for pre and next buttons
@@ -88,14 +103,15 @@ export default function FilesystemManageModal() {
       if (action === FilesystemActions.UPDATE) {
         const newNode =
           type === FilesystemCreateType.FILE
-            ? { name: values.name }
-            : { name: values.name, nodes: node.nodes };
+            ? { name: values.name, order: node.order }
+            : { name: values.name, nodes: node.nodes, order: node.order };
 
         updateNode(node?.name!, newNode);
 
         const newCurrentSelectedNode = {
           name: newNode.name,
           nodes: [...node?.nodes!],
+          order: node.order,
         };
 
         // TODO: Implement logic to prevent from entering to the folder when updating

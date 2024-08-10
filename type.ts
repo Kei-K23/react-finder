@@ -1,6 +1,7 @@
 export type Node = {
     name: string;
     nodes?: Node[];
+    order: number
 };
 
 export type FinderMinimizePrevStateType = {

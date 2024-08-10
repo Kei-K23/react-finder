@@ -7,8 +7,10 @@ export const NODES: Node[] = [
             {
                 name: "ScreenShort",
                 nodes: [],
+                order: 0
             },
         ],
+        order: 0,
     },
     {
         name: "Home",
@@ -22,47 +24,63 @@ export const NODES: Node[] = [
                             {
                                 name: "2000s",
                                 nodes: [
-                                    { name: "Gladiator.mp4" },
-                                    { name: "The-Dark-Knight.mp4" },
+                                    { name: "Gladiator.mp4", order: 0 },
+                                    { name: "The-Dark-Knight.mp4", order: 1 },
                                 ],
+                                order: 0
                             },
-                            { name: "2010s", nodes: [] },
+                            { name: "2010s", nodes: [], order: 1 },
                         ],
+                        order: 0
                     },
                     {
                         name: "Comedy",
-                        nodes: [{ name: "2000s", nodes: [{ name: "Superbad.mp4" }] }],
+                        nodes: [
+                            {
+                                name: "2000s",
+                                nodes: [
+                                    { name: "Superbad.mp4", order: 0 }
+                                ],
+                                order: 0
+                            }
+                        ],
+                        order: 1
                     },
                     {
                         name: "Drama",
                         nodes: [
-                            { name: "2000s", nodes: [{ name: "American-Beauty.mp4" }] },
+                            { name: "2000s", nodes: [{ name: "American-Beauty.mp4", order: 0 }], order: 0 },
                         ],
+                        order: 2
                     },
                 ],
+                order: 0
             },
             {
                 name: "Music",
                 nodes: [
-                    { name: "Rock", nodes: [] },
-                    { name: "Classical", nodes: [] },
+                    { name: "Rock", nodes: [], order: 0 },
+                    { name: "Classical", nodes: [], order: 1 },
                 ],
+                order: 1
             },
-            { name: "Pictures", nodes: [] },
-            { name: "Codes", nodes: [] },
-            { name: "Projects", nodes: [] },
-            { name: "Games", nodes: [] },
-            { name: "Notes", nodes: [] },
-            { name: "Test", nodes: [] },
-            { name: "Homeworks", nodes: [] },
+            { name: "Pictures", nodes: [], order: 2 },
+            { name: "Codes", nodes: [], order: 3 },
+            { name: "Projects", nodes: [], order: 4 },
+            { name: "Games", nodes: [], order: 5 },
+            { name: "Notes", nodes: [], order: 6 },
+            { name: "Test", nodes: [], order: 7 },
+            { name: "Homeworks", nodes: [], order: 8 },
             {
                 name: "Documents",
                 nodes: [],
+                order: 9
             },
-            { name: "passwords.txt" },
-            { name: "myNotes.txt" },
-            { name: "email.txt" },
+            { name: "passwords.txt", order: 10 },
+            { name: "myNotes.txt", order: 11 },
+            { name: "email.txt", order: 12 },
         ],
+        order: 1
     },
     {
         name: "Desktop",
@@ -70,8 +88,10 @@ export const NODES: Node[] = [
             {
                 name: "Programs",
                 nodes: [],
+                order: 0
             },
         ],
+        order: 2
     },
 ];
 
