@@ -27,7 +27,6 @@ export default function FilesystemContextMenu({
     rightClickState,
     setRightClickState,
     setTempRightClickState,
-    setLeftState,
     leftState,
   } = useRightClickFilesystemStore();
   const isFile = !rightClickState?.nodes;
@@ -39,7 +38,6 @@ export default function FilesystemContextMenu({
           // Setting null to setRightClickState will no update immediately because useState is sync
           setRightClickState(null);
           setTempRightClickState(null);
-          setLeftState(false);
           if (rightClickState) {
             setNode(rightClickState!);
           }

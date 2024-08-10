@@ -7,10 +7,12 @@ export const NODES: Node[] = [
             {
                 name: "ScreenShort",
                 nodes: [],
-                order: 0
+                order: 0,
+                id: 0
             },
         ],
         order: 0,
+        id: 0,
     },
     {
         name: "Home",
@@ -24,14 +26,16 @@ export const NODES: Node[] = [
                             {
                                 name: "2000s",
                                 nodes: [
-                                    { name: "Gladiator.mp4", order: 0 },
-                                    { name: "The-Dark-Knight.mp4", order: 1 },
+                                    { name: "Gladiator.mp4", order: 0, id: 0 },
+                                    { name: "The-Dark-Knight.mp4", order: 1, id: 1 },
                                 ],
-                                order: 0
+                                order: 0,
+                                id: 0
                             },
-                            { name: "2010s", nodes: [], order: 1 },
+                            { name: "2010s", nodes: [], order: 1, id: 1 },
                         ],
-                        order: 0
+                        order: 0,
+                        id: 0
                     },
                     {
                         name: "Comedy",
@@ -39,48 +43,55 @@ export const NODES: Node[] = [
                             {
                                 name: "2000s",
                                 nodes: [
-                                    { name: "Superbad.mp4", order: 0 }
+                                    { name: "Superbad.mp4", order: 0, id: 0 }
                                 ],
-                                order: 0
+                                order: 0,
+                                id: 0
                             }
                         ],
-                        order: 1
+                        order: 1,
+                        id: 1
                     },
                     {
                         name: "Drama",
                         nodes: [
-                            { name: "2000s", nodes: [{ name: "American-Beauty.mp4", order: 0 }], order: 0 },
+                            { name: "2000s", nodes: [{ name: "American-Beauty.mp4", order: 0, id: 0 }], order: 0, id: 0 },
                         ],
-                        order: 2
+                        order: 2,
+                        id: 2
                     },
                 ],
-                order: 0
+                order: 0,
+                id: 0
             },
             {
                 name: "Music",
                 nodes: [
-                    { name: "Rock", nodes: [], order: 0 },
-                    { name: "Classical", nodes: [], order: 1 },
+                    { name: "Rock", nodes: [], order: 0, id: 0 },
+                    { name: "Classical", nodes: [], order: 1, id: 1 },
                 ],
-                order: 1
+                order: 1,
+                id: 1
             },
-            { name: "Pictures", nodes: [], order: 2 },
-            { name: "Codes", nodes: [], order: 3 },
-            { name: "Projects", nodes: [], order: 4 },
-            { name: "Games", nodes: [], order: 5 },
-            { name: "Notes", nodes: [], order: 6 },
-            { name: "Test", nodes: [], order: 7 },
-            { name: "Homeworks", nodes: [], order: 8 },
+            { name: "Pictures", nodes: [], order: 2, id: 2 },
+            { name: "Codes", nodes: [], order: 3, id: 3 },
+            { name: "Projects", nodes: [], order: 4, id: 4 },
+            { name: "Games", nodes: [], order: 5, id: 5 },
+            { name: "Notes", nodes: [], order: 6, id: 6 },
+            { name: "Test", nodes: [], order: 7, id: 7 },
+            { name: "Homeworks", nodes: [], order: 8, id: 8 },
             {
                 name: "Documents",
                 nodes: [],
-                order: 9
+                order: 9,
+                id: 9,
             },
-            { name: "passwords.txt", order: 10 },
-            { name: "myNotes.txt", order: 11 },
-            { name: "email.txt", order: 12 },
+            { name: "passwords.txt", order: 10, id: 10 },
+            { name: "myNotes.txt", order: 11, id: 11 },
+            { name: "email.txt", order: 12, id: 12 },
         ],
-        order: 1
+        order: 1,
+        id: 1
     },
     {
         name: "Desktop",
@@ -88,10 +99,12 @@ export const NODES: Node[] = [
             {
                 name: "Programs",
                 nodes: [],
-                order: 0
+                order: 0,
+                id: 0,
             },
         ],
-        order: 2
+        order: 2,
+        id: 2
     },
 ];
 

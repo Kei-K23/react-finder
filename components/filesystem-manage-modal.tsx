@@ -29,7 +29,6 @@ import { Input } from "@/components/ui/input";
 import { useFilesystemStore } from "@/store/use-filesystem-store";
 import { useRightClickFilesystemStore } from "@/store/use-right-click-filesystem-store";
 import { getNextOrderNumber, getNextOrderNumberAtTopLevel } from "@/lib/utils";
-import { NODES } from "@/constant";
 
 const formSchema = z.object({
   name: z.string().min(1).max(50),
@@ -62,8 +61,17 @@ export default function FilesystemManageModal() {
         getNextOrderNumberAtTopLevel(storageNodes);
       const newNodeForLeft =
         type === FilesystemCreateType.FILE
-          ? { name: values.name, order: nextOrderNumberForTopLevel }
-          : { name: values.name, nodes: [], order: nextOrderNumberForTopLevel };
+          ? {
+              id: nextOrderNumberForTopLevel,
+              name: values.name,
+              order: nextOrderNumberForTopLevel,
+            }
+          : {
+              id: nextOrderNumberForTopLevel,
+              name: values.name,
+              nodes: [],
+              order: nextOrderNumberForTopLevel,
+            };
 
       addNewNodeForLeft(newNodeForLeft);
       form.reset();
@@ -80,12 +88,22 @@ export default function FilesystemManageModal() {
 
         const newNode =
           type === FilesystemCreateType.FILE
-            ? { name: values.name, order: nextNewOrderNumber }
-            : { name: values.name, nodes: [], order: nextNewOrderNumber };
+            ? {
+                id: nextNewOrderNumber,
+                name: values.name,
+                order: nextNewOrderNumber,
+              }
+            : {
+                id: nextNewOrderNumber,
+                name: values.name,
+                nodes: [],
+                order: nextNewOrderNumber,
+              };
 
         addNewNode(node?.name!, newNode);
 
         const newCurrentSelectedNode = {
+          id: node.id,
           name: node.name,
           nodes: [...node?.nodes!, newNode],
           order: node.order,
@@ -103,12 +121,18 @@ export default function FilesystemManageModal() {
       if (action === FilesystemActions.UPDATE) {
         const newNode =
           type === FilesystemCreateType.FILE
-            ? { name: values.name, order: node.order }
-            : { name: values.name, nodes: node.nodes, order: node.order };
+            ? { id: node.id, name: values.name, order: node.order }
+            : {
+                id: node.id,
+                name: values.name,
+                nodes: node.nodes,
+                order: node.order,
+              };
 
         updateNode(node?.name!, newNode);
 
         const newCurrentSelectedNode = {
+          id: node.id,
           name: newNode.name,
           nodes: [...node?.nodes!],
           order: node.order,

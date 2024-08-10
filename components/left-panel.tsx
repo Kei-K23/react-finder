@@ -4,7 +4,21 @@ import { Node } from "@/type";
 import LeftPanelNodeItem from "./left-panel-node-item";
 import FilesystemContextMenu from "./filesystem-context-menu";
 import { useRightClickFilesystemStore } from "@/store/use-right-click-filesystem-store";
-import { useFilesystemStore } from "@/store/use-filesystem-store";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 type LeftPanelProps = {
   nodes: Node[];
@@ -42,6 +56,19 @@ export default function LeftPanel({
     setTempRightClickState(node);
   };
 
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+
+    console.log(active, over);
+  }
+
   return (
     <FilesystemContextMenu>
       <div
@@ -66,17 +93,28 @@ export default function LeftPanel({
         />
         <p className="text-xs text-neutral-300 p-2 select-none">Favorites</p>
         <ul className="select-none p-2">
-          {nodes.map((node) => (
-            <FilesystemContextMenu key={node.name}>
-              <LeftPanelNodeItem
-                key={node.name}
-                node={node}
-                selectedNode={selectedNode}
-                handleNodeClick={handleNodeClick}
-                handleRightClick={handleRightClick}
-              />
-            </FilesystemContextMenu>
-          ))}
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={nodes}
+              strategy={verticalListSortingStrategy}
+            >
+              {nodes.map((node) => (
+                <FilesystemContextMenu key={node.name}>
+                  <LeftPanelNodeItem
+                    key={node.name}
+                    node={node}
+                    selectedNode={selectedNode}
+                    handleNodeClick={handleNodeClick}
+                    handleRightClick={handleRightClick}
+                  />
+                </FilesystemContextMenu>
+              ))}
+            </SortableContext>
+          </DndContext>
         </ul>
       </div>
     </FilesystemContextMenu>
