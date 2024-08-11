@@ -99,6 +99,7 @@ export default function FilesystemContextMenu({
                       rightClickState!
                     );
                   }}
+                  className="text-red-500"
                 >
                   Delete
                 </ContextMenuItem>

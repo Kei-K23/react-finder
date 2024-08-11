@@ -16,15 +16,27 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { useFilesystemStore } from "@/store/use-filesystem-store";
+import { findNodeByName } from "@/lib/utils";
+import { toast } from "sonner";
 
 export default function FilesystemDeleteModal() {
   const { isOpen, onClose, node, action, type } =
     useFilesystemManageModalStore();
 
-  const { deleteNode, currentSelectedNode, setCurrentSelectedNode } =
-    useFilesystemStore();
+  const {
+    nodes: storageNodes,
+    deleteNode,
+    currentSelectedNode,
+    setCurrentSelectedNode,
+  } = useFilesystemStore();
 
   const handleDelete = () => {
+    const isExistingNode = findNodeByName(storageNodes, node?.name!);
+    if (!!isExistingNode) {
+      toast.error(`'${node?.name!}' name already been taken`);
+      return;
+    }
+
     deleteNode(node?.name!);
     const newCurrentSelectedNode = {
       id: currentSelectedNode?.id!,

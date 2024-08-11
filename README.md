@@ -25,7 +25,11 @@ In recently, I really like the UI style call `glassmorphism`. I always wanted to
 
 ## Todo
 
-- [ ] Folder and file create, delete and rename
-- [ ] Sortable folders and files
-- [ ] Drag and drop every node
+- [x] Folder and file create, delete and rename
+- [x] Sortable folders and files
+- [x] Drag and drop every node
 - [x] Add Sentry error management
+- [ ] Smooth transition between each nodes
+- [ ] Add more functions to right panel action bar like finding folder or file
+- [ ] Smooth initial transition state management
+- [ ] Code refactoring
