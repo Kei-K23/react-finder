@@ -28,7 +28,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { useFilesystemStore } from "@/store/use-filesystem-store";
 import { useRightClickFilesystemStore } from "@/store/use-right-click-filesystem-store";
-import { getNextOrderNumber, getNextOrderNumberAtTopLevel } from "@/lib/utils";
+import {
+  findNodeByName,
+  getNextOrderNumber,
+  getNextOrderNumberAtTopLevel,
+} from "@/lib/utils";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(1).max(50),
@@ -83,6 +88,13 @@ export default function FilesystemManageModal() {
       return;
     } else {
       if (!node) {
+        return;
+      }
+
+      const isExistingNode = findNodeByName(storageNodes, values.name);
+
+      if (!!isExistingNode) {
+        toast.error(`'${values.name}' name already been taken`);
         return;
       }
 

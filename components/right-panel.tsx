@@ -127,11 +127,11 @@ export default function RightPanel({
           ref={rightPanelRef}
           className="flex flex-col h-[3000px]"
         >
-          <div className="w-full">
+          <div className="w-full h-full">
             {selectedNode?.nodes && selectedNode?.nodes?.length > 0 ? (
               <ul
                 className={cn(
-                  "grid grid-cols-2 gap-1 overflow-auto p-3 scrollbar-thin ",
+                  "grid grid-cols-2 gap-1 scrollable-container p-3 scrollbar-thin",
                   rightPanelWidth > 400 &&
                     rightPanelWidth < 500 &&
                     "grid-cols-2",

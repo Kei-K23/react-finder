@@ -99,4 +99,10 @@ body {
     filter: drop-shadow(0 27px 27px rgb(0 0 0 / 0.6));
   }
 
+  .scrollable-container {
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    max-height: 100%;
+    /* Ensure it takes full height available */
+  }
 }

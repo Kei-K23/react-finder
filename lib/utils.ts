@@ -30,7 +30,7 @@ export const addNode = (nodes: Node[], parentNodeName: string, newNode: Node): N
 
       if (nodeExists) {
         console.log(`Node with name "${newNode.name}" already exists.`);
-        return node; // Return the original node without changes
+        return node;
       }
 
       // Add the new node if it doesn't exist
@@ -172,51 +172,24 @@ export const reorderNodes = (nodes: Node[], activeId: string, overId: string): N
   return nodes.sort((a, b) => a.order - b.order);
 }
 
-// export const findNodeById = (nodes: Node[], id: string): Node | undefined => {
-//   for (const node of nodes) {
-//     if (node.id === id) return node;
-//     if (node?.nodes.length > 0) {
-//       const found = findNodeById(node?.nodes, id);
-//       if (found) return found;
-//     }
-//   }
-//   return undefined;
-// }
+export const getTopLevelNodeNames = (nodes: Node[]) => {
+  return nodes.map(n => n.name);
+}
 
-// export const reorderNodes = (nodes: Node[], activeId: string, overId: string): Node[] => {
-//   const activeNode = findNodeById(nodes, activeId);
-//   const overNode = findNodeById(nodes, overId);
+export const findNodeByName = (nodes: Node[], name: string): Node | undefined => {
+  if (!nodes) return undefined; // Check if nodes is undefined
 
-//   if (!activeNode || !overNode) return nodes;
-//   console.log(activeNode, overNode);
+  for (const node of nodes) {
+    if (node.name === name) {
+      return node;
+    }
 
-//   // Swap the order values between the activeNode and overNode
-//   const tempOrder = activeNode.order;
-//   activeNode.order = overNode.order;
-//   overNode.order = tempOrder;
-
-//   // Sort nodes at the current level
-//   const sortNodes = (nodes: Node[]): Node[] => {
-//     return nodes
-//       .map(node => ({
-//         ...node,
-//         nodes: node?.nodes.length > 0 ? sortNodes(node?.nodes) : node.nodes,
-//       }))
-//       .sort((a, b) => a.order - b.order);
-//   };
-
-//   return sortNodes(nodes);
-// }
-
-// function findParentNode(nodes: Node[], childId: number): Node | undefined {
-//   for (const node of nodes) {
-//     if (node.nodes && node.nodes.some(child => child.id === childId)) {
-//       return node;
-//     }
-//     if (node.nodes) {
-//       const found = findParentNode(node.nodes, childId);
-//       if (found) return found;
-//     }
-//   }
-//   return undefined;
-// }
+    if (node.nodes && node.nodes.length > 0) { // Check if node.nodes is defined and has elements
+      const found = findNodeByName(node.nodes, name);
+      if (found) {
+        return found;
+      }
+    }
+  }
+  return undefined;
+};

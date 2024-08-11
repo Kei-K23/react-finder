@@ -10,8 +10,9 @@ import {
   FilesystemCreateType,
   useFilesystemManageModalStore,
 } from "@/store/use-filesystem-manage-modal-store";
-import { PERMANENT_FOLDER } from "@/constant";
 import { useRightClickFilesystemStore } from "@/store/use-right-click-filesystem-store";
+import { useFilesystemStore } from "@/store/use-filesystem-store";
+import { getTopLevelNodeNames } from "@/lib/utils";
 
 type FilesystemContextMenuProps = {
   children: React.ReactNode;
@@ -29,8 +30,9 @@ export default function FilesystemContextMenu({
     setTempRightClickState,
     leftState,
   } = useRightClickFilesystemStore();
+  const { nodes: storageNodes } = useFilesystemStore();
   const isFile = !rightClickState?.nodes;
-
+  const PERMANENT_FOLDER = getTopLevelNodeNames(storageNodes);
   return (
     <ContextMenu
       onOpenChange={(e) => {
@@ -47,7 +49,7 @@ export default function FilesystemContextMenu({
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
       <ContextMenuContent className="bg-neutral-700 bg-clip-padding backdrop-filter flex flex-col backdrop-blur-xl bg-opacity-100 select-none text-neutral-100 border-gray-500 cursor-pointer">
         {/* TODO: Fix logic here */}
-        {!isFile && leftState ? (
+        {leftState ? (
           <>
             <ContextMenuItem
               onClick={() => {
@@ -59,24 +61,26 @@ export default function FilesystemContextMenu({
             </ContextMenuItem>
           </>
         ) : (
-          <>
-            <ContextMenuItem
-              onClick={() => {
-                setAction(FilesystemActions.CREATE);
-                onOpen(FilesystemCreateType.FILE);
-              }}
-            >
-              new file
-            </ContextMenuItem>
-            <ContextMenuItem
-              onClick={() => {
-                setAction(FilesystemActions.CREATE);
-                onOpen(FilesystemCreateType.FOLDER);
-              }}
-            >
-              new folder
-            </ContextMenuItem>
-          </>
+          !isFile && (
+            <>
+              <ContextMenuItem
+                onClick={() => {
+                  setAction(FilesystemActions.CREATE);
+                  onOpen(FilesystemCreateType.FILE);
+                }}
+              >
+                new file
+              </ContextMenuItem>
+              <ContextMenuItem
+                onClick={() => {
+                  setAction(FilesystemActions.CREATE);
+                  onOpen(FilesystemCreateType.FOLDER);
+                }}
+              >
+                new folder
+              </ContextMenuItem>
+            </>
+          )
         )}
         {isModifiable && (
           <>
