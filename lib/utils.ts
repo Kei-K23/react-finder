@@ -1,5 +1,4 @@
 import { Node } from "@/type";
-import { DragEndEvent } from "@dnd-kit/core";
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -146,42 +145,26 @@ export const getNextOrderNumberAtTopLevel = (nodes: Node[]): number => {
   }
 };
 
-export const findNodeById = (nodes: Node[], id: number): Node | undefined => {
+export const findTopNodeById = (nodes: Node[], id: number): Node | undefined => {
   for (const node of nodes) {
     if (node.id === id) return node;
-    if (node.nodes) {
-      const found = findNodeById(node.nodes, id);
-      if (found) return found;
-    }
   }
   return undefined;
 }
 
-export const reorderNodes = (nodes: Node[], activeId: number, overId: number): Node[] => {
-  const activeNode = findNodeById(nodes, activeId);
-  const overNode = findNodeById(nodes, overId);
+export const reorderTopNodes = (nodes: Node[], activeId: number, overId: number): Node[] => {
+  const activeNode = findTopNodeById(nodes, activeId);
+  const overNode = findTopNodeById(nodes, overId);
 
   if (!activeNode || !overNode) return nodes;
 
-  const parentNode = findParentNode(nodes, activeId);
-  if (!parentNode || !parentNode.nodes) return nodes;
+  // Swap the order values between the activeNode and overNode
+  const tempOrder = activeNode.order;
+  activeNode.order = overNode.order;
+  overNode.order = tempOrder;
 
-  const siblings = parentNode.nodes;
-
-  // Remove active node from its current position
-  const activeIndex = siblings.findIndex(node => node.id === activeId);
-  const [removed] = siblings.splice(activeIndex, 1);
-
-  // Insert active node into the new position
-  const overIndex = siblings.findIndex(node => node.id === overId);
-  siblings.splice(overIndex, 0, removed);
-
-  // Reorder the nodes based on their new positions
-  siblings.forEach((node, index) => {
-    node.order = index;
-  });
-
-  return nodes;
+  // Sort the nodes based on the new order
+  return nodes.sort((a, b) => a.order - b.order);
 }
 
 function findParentNode(nodes: Node[], childId: number): Node | undefined {

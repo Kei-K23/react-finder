@@ -34,7 +34,7 @@ export default function Finder({
   width,
   height,
 }: FinderProps) {
-  const { nodes, currentSelectedNode, setCurrentSelectedNode } =
+  const { nodes, currentSelectedNode, setCurrentSelectedNode, getNodes } =
     useFilesystemStore();
 
   const [selectedNode, setSelectedNode] = useState<Node | null>(
@@ -45,7 +45,7 @@ export default function Finder({
     // TODO: Check to find better way to handle this state
     // Update the current selected node value
     setSelectedNode(currentSelectedNode);
-  }, [nodes, currentSelectedNode]);
+  }, [getNodes, currentSelectedNode]);
 
   const { finderMinimizeState } = useFinderState();
 

@@ -20,7 +20,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { reorderNodes } from "@/lib/utils";
+import { reorderTopNodes } from "@/lib/utils";
 import { useFilesystemStore } from "@/store/use-filesystem-store";
 
 type LeftPanelProps = {
@@ -54,7 +54,7 @@ export default function LeftPanel({
 }: LeftPanelProps) {
   const { setTempRightClickState, setLeftState } =
     useRightClickFilesystemStore();
-  const { nodes: storageNodes } = useFilesystemStore();
+  const { nodes: storageNodes, setNodes } = useFilesystemStore();
 
   const handleRightClick = (node: Node | null) => {
     setTempRightClickState(node);
@@ -78,8 +78,8 @@ export default function LeftPanel({
     const overId = +over.id;
 
     // Reorder the nodes based on the drag-and-drop operation
-    const reorderNodeResults = reorderNodes(storageNodes, activeId, overId);
-    console.log(reorderNodeResults);
+    const reorderNodeResults = reorderTopNodes(storageNodes, activeId, overId);
+    setNodes(reorderNodeResults);
   }
 
   return (

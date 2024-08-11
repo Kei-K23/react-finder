@@ -9,6 +9,7 @@ type UseFilesystemStoreType = {
     nodes: Node[];
     currentSelectedNode: Node | null;
     getNodes: () => Node[];
+    setNodes: (nodes: Node[]) => void;
     setCurrentSelectedNode: (node: Node) => void;
     addNewNode: (parentNodeName: string, newNode: Node) => void;
     addNewNodeForLeft: (newNode: Node) => void;
@@ -22,6 +23,7 @@ export const useFilesystemStore = create<UseFilesystemStoreType>()(
         (set, get) => ({
             nodes: NODES,
             currentSelectedNode: null,
+            setNodes: (nodes: Node[]) => set({ nodes }),
             getNodes: () => {
                 return sortNodes(get().nodes || [])
             },
