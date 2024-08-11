@@ -3,7 +3,7 @@ import { Node } from "@/type";
 import RightPanelActionBar from "./right-panel-action-bar";
 import RightPanelNodeItem from "./right-panel-node-item";
 import useWidthChange from "@/hooks/use-width-change";
-import { cn } from "@/lib/utils";
+import { cn, reorderNodes } from "@/lib/utils";
 import FilesystemContextMenu from "./filesystem-context-menu";
 import { useFilesystemStore } from "@/store/use-filesystem-store";
 import { useRightClickFilesystemStore } from "@/store/use-right-click-filesystem-store";
@@ -55,7 +55,7 @@ export default function RightPanel({
   const { width: rightPanelWidth } = useWidthChange(rightPanelRef);
   const { setRightClickState, setTempRightClickState } =
     useRightClickFilesystemStore();
-  const { currentSelectedNode } = useFilesystemStore();
+  const { currentSelectedNode, setCurrentSelectedNode } = useFilesystemStore();
 
   const handleRightClick = (node: Node | null) => {
     setTempRightClickState(node);
@@ -75,12 +75,31 @@ export default function RightPanel({
 
     if (!active || !over || active.id === over.id) return;
 
-    const activeId = +active.id;
-    const overId = +over.id;
+    const activeId = active.id.toString();
+    const overId = over.id.toString();
 
     // Reorder the nodes based on the drag-and-drop operation
-    // const reorderNodeResults = reorderTopNodes(storageNodes, activeId, overId);
-    // setNodes(reorderNodeResults);
+    const reorderNodeResults = reorderNodes(
+      currentSelectedNode?.nodes!,
+      activeId,
+      overId
+    );
+
+    const newCurrentSelectedNode: Node = {
+      id: currentSelectedNode?.id!,
+      name: currentSelectedNode?.name!,
+      order: currentSelectedNode?.order!,
+      nodes: reorderNodeResults,
+    };
+
+    selectedNode = {
+      id: currentSelectedNode?.id!,
+      name: currentSelectedNode?.name!,
+      order: currentSelectedNode?.order!,
+      nodes: reorderNodeResults,
+    };
+
+    setCurrentSelectedNode(newCurrentSelectedNode);
   }
 
   return (
@@ -112,7 +131,7 @@ export default function RightPanel({
             {selectedNode?.nodes && selectedNode?.nodes?.length > 0 ? (
               <ul
                 className={cn(
-                  "grid grid-cols-2 gap-1 overflow-auto p-3 scrollbar-thin",
+                  "grid grid-cols-2 gap-1 overflow-auto p-3 scrollbar-thin ",
                   rightPanelWidth > 400 &&
                     rightPanelWidth < 500 &&
                     "grid-cols-2",

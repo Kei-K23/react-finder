@@ -145,16 +145,21 @@ export const getNextOrderNumberAtTopLevel = (nodes: Node[]): number => {
   }
 };
 
-export const findTopNodeById = (nodes: Node[], id: string): Node | undefined => {
+export const findNodeById = (nodes: Node[], id: string): Node | undefined => {
   for (const node of nodes) {
     if (node.id === id) return node;
+    // Check if node.nodes is defined and is an array before accessing its length
+    if (Array.isArray(node.nodes) && node.nodes.length > 0) {
+      const found = findNodeById(node.nodes, id);
+      if (found) return found;
+    }
   }
   return undefined;
 }
 
-export const reorderTopNodes = (nodes: Node[], activeId: string, overId: string): Node[] => {
-  const activeNode = findTopNodeById(nodes, activeId);
-  const overNode = findTopNodeById(nodes, overId);
+export const reorderNodes = (nodes: Node[], activeId: string, overId: string): Node[] => {
+  const activeNode = findNodeById(nodes, activeId);
+  const overNode = findNodeById(nodes, overId);
 
   if (!activeNode || !overNode) return nodes;
 
@@ -166,6 +171,42 @@ export const reorderTopNodes = (nodes: Node[], activeId: string, overId: string)
   // Sort the nodes based on the new order
   return nodes.sort((a, b) => a.order - b.order);
 }
+
+// export const findNodeById = (nodes: Node[], id: string): Node | undefined => {
+//   for (const node of nodes) {
+//     if (node.id === id) return node;
+//     if (node?.nodes.length > 0) {
+//       const found = findNodeById(node?.nodes, id);
+//       if (found) return found;
+//     }
+//   }
+//   return undefined;
+// }
+
+// export const reorderNodes = (nodes: Node[], activeId: string, overId: string): Node[] => {
+//   const activeNode = findNodeById(nodes, activeId);
+//   const overNode = findNodeById(nodes, overId);
+
+//   if (!activeNode || !overNode) return nodes;
+//   console.log(activeNode, overNode);
+
+//   // Swap the order values between the activeNode and overNode
+//   const tempOrder = activeNode.order;
+//   activeNode.order = overNode.order;
+//   overNode.order = tempOrder;
+
+//   // Sort nodes at the current level
+//   const sortNodes = (nodes: Node[]): Node[] => {
+//     return nodes
+//       .map(node => ({
+//         ...node,
+//         nodes: node?.nodes.length > 0 ? sortNodes(node?.nodes) : node.nodes,
+//       }))
+//       .sort((a, b) => a.order - b.order);
+//   };
+
+//   return sortNodes(nodes);
+// }
 
 // function findParentNode(nodes: Node[], childId: number): Node | undefined {
 //   for (const node of nodes) {

@@ -20,7 +20,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { reorderTopNodes } from "@/lib/utils";
+import { reorderNodes } from "@/lib/utils";
 import { useFilesystemStore } from "@/store/use-filesystem-store";
 
 type LeftPanelProps = {
@@ -78,7 +78,7 @@ export default function LeftPanel({
     const overId = over.id.toString();
 
     // Reorder the nodes based on the drag-and-drop operation
-    const reorderNodeResults = reorderTopNodes(storageNodes, activeId, overId);
+    const reorderNodeResults = reorderNodes(storageNodes, activeId, overId);
     setNodes(reorderNodeResults);
   }
 
