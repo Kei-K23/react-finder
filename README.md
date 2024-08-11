@@ -1,6 +1,6 @@
 # React Finder 🗂️
 
-Recreating Mac OS file explore 'Finder' 🗂️ but this one is for web 🕸️. I recreated most functionalities of Mac OS Finder, including UI and user interactions functionalities and features.
+Recreating the interactive Mac OS file explore 'Finder' 🗂️ but this one is for web 🕸️. I recreated most functionalities of Mac OS Finder, including UI and user interactions functionalities and features.
 
 ⚠️ This is still in development ⚠️
 
@@ -23,6 +23,40 @@ In recently, I really like the UI style call `glassmorphism`. I always wanted to
 - ShadcnUI
 - Zustand
 
+## Installation
+
+This is purely NextJS frontend project.
+
+1. Clone the repo
+
+```bash
+git clone https://github.com/Kei-K23/react-finder.git
+```
+
+2. Change directory
+
+```bash
+cd react-finder
+```
+
+3. Install dependencies
+
+```bash
+pnpm install
+# or
+npm install
+```
+
+4. Run project locally
+
+```bash
+pnpm run dev
+# or
+npm run dev
+```
+
+5. Setup your own Sentry (optional)
+
 ## Todo
 
 - [x] Folder and file create, delete and rename
@@ -33,3 +67,7 @@ In recently, I really like the UI style call `glassmorphism`. I always wanted to
 - [ ] Add more functions to right panel action bar like finding folder or file
 - [ ] Smooth initial transition state management
 - [ ] Code refactoring
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE).
