@@ -15,7 +15,7 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
+import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -55,6 +55,9 @@ export default function FilesystemManageModal() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    // UUID
+    const newNodeId = uuidv4();
+
     // Create file in the left side of finder
     if (leftState) {
       const nextOrderNumberForTopLevel =
@@ -62,12 +65,12 @@ export default function FilesystemManageModal() {
       const newNodeForLeft =
         type === FilesystemCreateType.FILE
           ? {
-              id: nextOrderNumberForTopLevel,
+              id: newNodeId,
               name: values.name,
               order: nextOrderNumberForTopLevel,
             }
           : {
-              id: nextOrderNumberForTopLevel,
+              id: newNodeId,
               name: values.name,
               nodes: [],
               order: nextOrderNumberForTopLevel,
@@ -89,12 +92,12 @@ export default function FilesystemManageModal() {
         const newNode =
           type === FilesystemCreateType.FILE
             ? {
-                id: nextNewOrderNumber,
+                id: newNodeId,
                 name: values.name,
                 order: nextNewOrderNumber,
               }
             : {
-                id: nextNewOrderNumber,
+                id: newNodeId,
                 name: values.name,
                 nodes: [],
                 order: nextNewOrderNumber,

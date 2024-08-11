@@ -145,14 +145,14 @@ export const getNextOrderNumberAtTopLevel = (nodes: Node[]): number => {
   }
 };
 
-export const findTopNodeById = (nodes: Node[], id: number): Node | undefined => {
+export const findTopNodeById = (nodes: Node[], id: string): Node | undefined => {
   for (const node of nodes) {
     if (node.id === id) return node;
   }
   return undefined;
 }
 
-export const reorderTopNodes = (nodes: Node[], activeId: number, overId: number): Node[] => {
+export const reorderTopNodes = (nodes: Node[], activeId: string, overId: string): Node[] => {
   const activeNode = findTopNodeById(nodes, activeId);
   const overNode = findTopNodeById(nodes, overId);
 
@@ -167,15 +167,15 @@ export const reorderTopNodes = (nodes: Node[], activeId: number, overId: number)
   return nodes.sort((a, b) => a.order - b.order);
 }
 
-function findParentNode(nodes: Node[], childId: number): Node | undefined {
-  for (const node of nodes) {
-    if (node.nodes && node.nodes.some(child => child.id === childId)) {
-      return node;
-    }
-    if (node.nodes) {
-      const found = findParentNode(node.nodes, childId);
-      if (found) return found;
-    }
-  }
-  return undefined;
-}
+// function findParentNode(nodes: Node[], childId: number): Node | undefined {
+//   for (const node of nodes) {
+//     if (node.nodes && node.nodes.some(child => child.id === childId)) {
+//       return node;
+//     }
+//     if (node.nodes) {
+//       const found = findParentNode(node.nodes, childId);
+//       if (found) return found;
+//     }
+//   }
+//   return undefined;
+// }

@@ -2,6 +2,8 @@ import useGetIconBasedOnFileExtension from "@/hooks/use-get-icon-based-on-file-e
 import { cn } from "@/lib/utils";
 import { useRightClickFilesystemStore } from "@/store/use-right-click-filesystem-store";
 import { Node } from "@/type";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { Folder } from "lucide-react";
 import React from "react";
 
@@ -20,8 +22,18 @@ export default function RightPanelNodeItem({
     useRightClickFilesystemStore();
   const IconNode = useGetIconBasedOnFileExtension(node.name);
 
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: node.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   return (
     <li
+      style={style}
+      ref={setNodeRef}
       key={node.name}
       onDoubleClick={(e) => {
         e.stopPropagation();
@@ -34,6 +46,8 @@ export default function RightPanelNodeItem({
         handleRightClick(node);
         setRightClickState(node);
       }}
+      {...attributes}
+      {...listeners}
     >
       <div className="flex items-center flex-col gap-1">
         {node.nodes ? (

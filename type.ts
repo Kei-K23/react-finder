@@ -1,5 +1,5 @@
 export type Node = {
-    id: number;
+    id: string;
     name: string;
     nodes?: Node[];
     order: number

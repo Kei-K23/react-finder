@@ -74,8 +74,8 @@ export default function LeftPanel({
 
     if (!active || !over || active.id === over.id) return;
 
-    const activeId = +active.id;
-    const overId = +over.id;
+    const activeId = active.id.toString();
+    const overId = over.id.toString();
 
     // Reorder the nodes based on the drag-and-drop operation
     const reorderNodeResults = reorderTopNodes(storageNodes, activeId, overId);

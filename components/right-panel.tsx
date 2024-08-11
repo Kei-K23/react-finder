@@ -7,6 +7,20 @@ import { cn } from "@/lib/utils";
 import FilesystemContextMenu from "./filesystem-context-menu";
 import { useFilesystemStore } from "@/store/use-filesystem-store";
 import { useRightClickFilesystemStore } from "@/store/use-right-click-filesystem-store";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  rectSwappingStrategy,
+  SortableContext,
+  sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
 
 type RightPanelProps = {
   selectedNode: Node | null;
@@ -46,6 +60,28 @@ export default function RightPanel({
   const handleRightClick = (node: Node | null) => {
     setTempRightClickState(node);
   };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { delay: 100, tolerance: 100 },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+
+    if (!active || !over || active.id === over.id) return;
+
+    const activeId = +active.id;
+    const overId = +over.id;
+
+    // Reorder the nodes based on the drag-and-drop operation
+    // const reorderNodeResults = reorderTopNodes(storageNodes, activeId, overId);
+    // setNodes(reorderNodeResults);
+  }
 
   return (
     <div className="flex w-full h-full flex-col bg-neutral-800">
@@ -127,16 +163,29 @@ export default function RightPanel({
                     "grid-cols-17"
                 )}
               >
-                {selectedNode?.nodes?.map((node) => (
-                  <FilesystemContextMenu key={node.name}>
-                    <RightPanelNodeItem
-                      key={node.name}
-                      node={node}
-                      handleNodeClick={handleNodeClick}
-                      handleRightClick={handleRightClick}
-                    />
-                  </FilesystemContextMenu>
-                ))}
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={(e) => {
+                    handleDragEnd(e);
+                  }}
+                >
+                  <SortableContext
+                    items={selectedNode.nodes}
+                    strategy={rectSwappingStrategy}
+                  >
+                    {selectedNode?.nodes?.map((node) => (
+                      <FilesystemContextMenu key={node.name}>
+                        <RightPanelNodeItem
+                          key={node.name}
+                          node={node}
+                          handleNodeClick={handleNodeClick}
+                          handleRightClick={handleRightClick}
+                        />
+                      </FilesystemContextMenu>
+                    ))}
+                  </SortableContext>
+                </DndContext>
               </ul>
             ) : selectedNode?.name ? (
               <div className="w-full mt-[20%] flex justify-center items-center">

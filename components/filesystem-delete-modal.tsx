@@ -27,6 +27,8 @@ export default function FilesystemDeleteModal() {
   const handleDelete = () => {
     deleteNode(node?.name!);
     const newCurrentSelectedNode = {
+      id: currentSelectedNode?.id!,
+      order: currentSelectedNode?.order!,
       name: currentSelectedNode?.name!,
       nodes: currentSelectedNode?.nodes?.filter((n) => n.name !== node?.name),
     };
