@@ -1,10 +1,10 @@
 import { Node } from "@/type";
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export const cn = (...inputs: ClassValue[]) => {
-  return twMerge(clsx(inputs))
-}
+  return twMerge(clsx(inputs));
+};
 
 export const calculateRightPanelDefaultSize = (width: number) => {
   if (width <= 800) {
@@ -14,11 +14,15 @@ export const calculateRightPanelDefaultSize = (width: number) => {
   } else {
     return 20;
   }
-}
+};
 
 // Utility function to find and add a node if it doesn't already exist
-export const addNode = (nodes: Node[], parentNodeName: string, newNode: Node): Node[] => {
-  return nodes.map(node => {
+export const addNode = (
+  nodes: Node[],
+  parentNodeName: string,
+  newNode: Node
+): Node[] => {
+  return nodes.map((node) => {
     // Node is not folder then return
     if (!node.nodes) {
       return node;
@@ -26,7 +30,9 @@ export const addNode = (nodes: Node[], parentNodeName: string, newNode: Node): N
 
     if (node.name === parentNodeName) {
       // Check if a node with the same name already exists in the current node's children
-      const nodeExists = node.nodes.some(childNode => childNode.name === newNode.name);
+      const nodeExists = node.nodes.some(
+        (childNode) => childNode.name === newNode.name
+      );
 
       if (nodeExists) {
         console.log(`Node with name "${newNode.name}" already exists.`);
@@ -35,7 +41,6 @@ export const addNode = (nodes: Node[], parentNodeName: string, newNode: Node): N
 
       // Add the new node if it doesn't exist
       return { ...node, nodes: [...node.nodes, newNode] };
-
     } else if (node?.nodes.length > 0) {
       // Recursively search and add the node to nested nodes
       return { ...node, nodes: addNode(node.nodes, parentNodeName, newNode) };
@@ -45,26 +50,57 @@ export const addNode = (nodes: Node[], parentNodeName: string, newNode: Node): N
   });
 };
 
+// // Utility function to find and update a node
+// export const updateNode = (
+//   nodes: Node[],
+//   nodeName: string,
+//   updatedNode: Partial<Node>
+// ): Node[] => {
+//   return nodes.map((node) => {
+//     if (node.name === nodeName) {
+//       // Updating the file
+//       if (!node.nodes) {
+//         node.name = updateNode.name;
+//       }
+//       // Check if a node with the same name already exists in the current node's children
+//       //@ts-ignore
+//       const nodeExists = node.nodes.some(
+//         (childNode) => childNode.name === updatedNode.name
+//       );
 
-// Utility function to find and update a node 
-export const updateNode = (nodes: Node[], nodeName: string, updatedNode: Partial<Node>): Node[] => {
-  return nodes.map(node => {
+//       if (!nodeExists) {
+//         console.log(
+//           `Node with name "${updatedNode.name}" is not exist to update.`
+//         );
+//         return node; // Return the original node without changes
+//       }
+
+//       return { ...node, ...updatedNode };
+//       //@ts-ignore
+//     } else if (node?.nodes?.length > 0) {
+//       //@ts-ignore
+//       return { ...node, nodes: updateNode(node?.nodes, nodeName, updatedNode) };
+//     }
+//     return node;
+//   });
+// };
+
+// Utility function to find and update a node
+export const updateNode = (
+  nodes: Node[],
+  nodeName: string,
+  newName: string
+): Node[] => {
+  return nodes.map((node) => {
     if (node.name === nodeName) {
-      // Check if a node with the same name already exists in the current node's children
-      //@ts-ignore
-      const nodeExists = node.nodes.some(childNode => childNode.name === updatedNode.name);
-
-      if (!nodeExists) {
-        console.log(`Node with name "${updatedNode.name}" is not exist to update.`);
-        return node; // Return the original node without changes
-      }
-
-      return { ...node, ...updatedNode };
-      //@ts-ignore
-    } else if (node?.nodes?.length > 0) {
-      //@ts-ignore
-      return { ...node, nodes: updateNode(node?.nodes, nodeName, updatedNode) };
+      return { ...node, name: newName };
     }
+
+    // Ensure that only folders (or non-files) have child nodes
+    if (node?.nodes && node.nodes.length > 0) {
+      return { ...node, nodes: updateNode(node.nodes, nodeName, newName) };
+    }
+
     return node;
   });
 };
@@ -73,7 +109,7 @@ export const updateNode = (nodes: Node[], nodeName: string, updatedNode: Partial
 export const deleteNode = (nodes: Node[], nodeName: string): Node[] => {
   console.log(nodeName);
   return nodes
-    .map(node => {
+    .map((node) => {
       if (node.name === nodeName) {
         return null;
         //@ts-ignore
@@ -83,16 +119,16 @@ export const deleteNode = (nodes: Node[], nodeName: string): Node[] => {
       }
       return node;
     })
-    .filter(node => node !== null) as Node[];
+    .filter((node) => node !== null) as Node[];
 };
 
 export const getFileExtension = (filename: string) => {
   // Split the filename by the dot character
-  const parts = filename.split('.');
+  const parts = filename.split(".");
 
   // If there's no dot in the filename, return an empty string
   if (parts.length === 1) {
-    return '';
+    return "";
   }
 
   // Return the last part after the last dot
@@ -105,21 +141,26 @@ export const sortNodes = (nodes: Node[]) => {
   nodes.sort((a, b) => a.order - b.order);
 
   // Recursively sort nested nodes
-  nodes.forEach(node => {
+  nodes.forEach((node) => {
     if (node.nodes && node.nodes.length > 0) {
       sortNodes(node.nodes);
     }
   });
 
-  return nodes
-}
+  return nodes;
+};
 
 // Helper function to get the next order number within a specific node
-export const getNextOrderNumber = (nodes: Node[], parentNodeName: string): number => {
+export const getNextOrderNumber = (
+  nodes: Node[],
+  parentNodeName: string
+): number => {
   for (let node of nodes) {
     if (node.name === parentNodeName) {
       if (node.nodes && node.nodes.length > 0) {
-        const maxOrder = Math.max(...node.nodes.map(childNode => childNode.order));
+        const maxOrder = Math.max(
+          ...node.nodes.map((childNode) => childNode.order)
+        );
         return maxOrder + 1;
       } else {
         return 0; // If no nodes exist, the next order number should be 0
@@ -134,11 +175,10 @@ export const getNextOrderNumber = (nodes: Node[], parentNodeName: string): numbe
   return -1; // Return -1 if the parentNodeName is not found
 };
 
-
 // Helper function to get the next order number at the top level (same level as "Recents", "Home", etc.)
 export const getNextOrderNumberAtTopLevel = (nodes: Node[]): number => {
   if (nodes && nodes.length > 0) {
-    const maxOrder = Math.max(...nodes.map(node => node.order));
+    const maxOrder = Math.max(...nodes.map((node) => node.order));
     return maxOrder + 1;
   } else {
     return 0; // If no nodes exist at the top level, the next order number should be 0
@@ -155,9 +195,13 @@ export const findNodeById = (nodes: Node[], id: string): Node | undefined => {
     }
   }
   return undefined;
-}
+};
 
-export const reorderNodes = (nodes: Node[], activeId: string, overId: string): Node[] => {
+export const reorderNodes = (
+  nodes: Node[],
+  activeId: string,
+  overId: string
+): Node[] => {
   const activeNode = findNodeById(nodes, activeId);
   const overNode = findNodeById(nodes, overId);
 
@@ -170,13 +214,16 @@ export const reorderNodes = (nodes: Node[], activeId: string, overId: string): N
 
   // Sort the nodes based on the new order
   return nodes.sort((a, b) => a.order - b.order);
-}
+};
 
 export const getTopLevelNodeNames = (nodes: Node[]) => {
-  return nodes.map(n => n.name);
-}
+  return nodes.map((n) => n.name);
+};
 
-export const findNodeByName = (nodes: Node[], name: string): Node | undefined => {
+export const findNodeByName = (
+  nodes: Node[],
+  name: string
+): Node | undefined => {
   if (!nodes) return undefined; // Check if nodes is undefined
 
   for (const node of nodes) {
@@ -184,7 +231,8 @@ export const findNodeByName = (nodes: Node[], name: string): Node | undefined =>
       return node;
     }
 
-    if (node.nodes && node.nodes.length > 0) { // Check if node.nodes is defined and has elements
+    if (node.nodes && node.nodes.length > 0) {
+      // Check if node.nodes is defined and has elements
       const found = findNodeByName(node.nodes, name);
       if (found) {
         return found;

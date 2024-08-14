@@ -32,8 +32,8 @@ export default function FilesystemDeleteModal() {
 
   const handleDelete = () => {
     const isExistingNode = findNodeByName(storageNodes, node?.name!);
-    if (!!isExistingNode) {
-      toast.error(`'${node?.name!}' name already been taken`);
+    if (isExistingNode === undefined) {
+      toast.error(`'${node?.name!}' is not exist to delete`);
       return;
     }
 

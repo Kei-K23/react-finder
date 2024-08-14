@@ -34,6 +34,7 @@ import {
   getNextOrderNumberAtTopLevel,
 } from "@/lib/utils";
 import { toast } from "sonner";
+import { updateNode as updatedNode } from "@/lib/utils";
 
 const formSchema = z.object({
   name: z.string().min(1).max(50),
@@ -46,6 +47,7 @@ export default function FilesystemManageModal() {
     updateNode,
     setCurrentSelectedNode,
     nodes: storageNodes,
+    currentSelectedNode,
   } = useFilesystemStore();
   const { setRightClickState, leftState, setLeftState } =
     useRightClickFilesystemStore();
@@ -145,12 +147,17 @@ export default function FilesystemManageModal() {
               };
 
         updateNode(node?.name!, newNode);
+        const newStateForCurrent = updatedNode(
+          currentSelectedNode?.nodes!,
+          node?.name!,
+          newNode.name!
+        );
 
         const newCurrentSelectedNode = {
-          id: node.id,
-          name: newNode.name,
-          nodes: [...node?.nodes!],
-          order: node.order,
+          id: currentSelectedNode?.id!,
+          name: currentSelectedNode?.name!,
+          nodes: [...newStateForCurrent],
+          order: currentSelectedNode?.order!,
         };
 
         // TODO: Implement logic to prevent from entering to the folder when updating
