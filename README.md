@@ -12,6 +12,7 @@ In recently, I really like the UI style call `glassmorphism`. I always wanted to
 
 - Beautiful UI design with `Glassmorphism` effect
 - Similar behavior and functionalities of Mac OS Finder
+- Create, rename and delete file and folder with native features like right click on item
 - User's device battery status
 - Settings to change background wallpaper
 - Others...
