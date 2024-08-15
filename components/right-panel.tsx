@@ -125,9 +125,9 @@ export default function RightPanel({
             }
           }}
           ref={rightPanelRef}
-          className="flex flex-col h-[3000px]"
+          className="flex flex-col h-[3000px] flex-grow overflow-y-auto"
         >
-          <div className="w-full h-full">
+          <div className="w-full h-full overflow-y-auto">
             {selectedNode?.nodes && selectedNode?.nodes?.length > 0 ? (
               <ul
                 className={cn(

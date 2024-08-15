@@ -47,7 +47,7 @@ export default function FilesystemContextMenu({
       }}
     >
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
-      <ContextMenuContent className="bg-neutral-700 bg-clip-padding backdrop-filter flex flex-col backdrop-blur-xl bg-opacity-100 select-none text-neutral-100 border-gray-500 cursor-pointer">
+      <ContextMenuContent className="bg-neutral-700 bg-clip-padding backdrop-filter flex flex-col backdrop-blur-xl bg-opacity-100 select-none text-neutral-100 border-gray-500 cursor-pointer overflow-auto">
         {/* TODO: Fix logic here */}
         {leftState ? (
           <>
