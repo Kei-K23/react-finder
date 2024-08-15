@@ -125,7 +125,7 @@ export default function RightPanel({
             }
           }}
           ref={rightPanelRef}
-          className="flex flex-col h-[3000px]"
+          className="flex h-full"
         >
           <div className="w-full h-full">
             {selectedNode?.nodes && selectedNode?.nodes?.length > 0 ? (

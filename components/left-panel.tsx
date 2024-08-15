@@ -3,7 +3,9 @@
 import React from "react";
 import WindowActionsContainer from "./window-actions-container";
 import { Node } from "@/type";
-import LeftPanelNodeItem from "./left-panel-node-item";
+import LeftPanelNodeItem, {
+  LeftPanelNodeItemSkeleton,
+} from "./left-panel-node-item";
 import FilesystemContextMenu from "./filesystem-context-menu";
 import { useRightClickFilesystemStore } from "@/store/use-right-click-filesystem-store";
 import {
@@ -117,17 +119,23 @@ export default function LeftPanel({
               items={nodes}
               strategy={verticalListSortingStrategy}
             >
-              {nodes.map((node) => (
-                <FilesystemContextMenu key={node.name}>
-                  <LeftPanelNodeItem
-                    key={node.name}
-                    node={node}
-                    selectedNode={selectedNode}
-                    handleNodeClick={handleNodeClick}
-                    handleRightClick={handleRightClick}
-                  />
-                </FilesystemContextMenu>
-              ))}
+              {nodes.length < 0
+                ? nodes.map((node) => (
+                    <FilesystemContextMenu key={node.name}>
+                      <LeftPanelNodeItem
+                        key={node.name}
+                        node={node}
+                        selectedNode={selectedNode}
+                        handleNodeClick={handleNodeClick}
+                        handleRightClick={handleRightClick}
+                      />
+                    </FilesystemContextMenu>
+                  ))
+                : [1, 2, 3, 4].map((i) => (
+                    <LeftPanelNodeItemSkeleton
+                      key={i}
+                    ></LeftPanelNodeItemSkeleton>
+                  ))}
             </SortableContext>
           </DndContext>
         </ul>
