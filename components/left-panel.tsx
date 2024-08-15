@@ -119,7 +119,7 @@ export default function LeftPanel({
               items={nodes}
               strategy={verticalListSortingStrategy}
             >
-              {nodes.length < 0
+              {nodes.length > 0
                 ? nodes.map((node) => (
                     <FilesystemContextMenu key={node.name}>
                       <LeftPanelNodeItem

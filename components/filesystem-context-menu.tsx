@@ -46,9 +46,7 @@ export default function FilesystemContextMenu({
         }
       }}
     >
-      <ContextMenuTrigger className="overflow-auto h-full">
-        {children}
-      </ContextMenuTrigger>
+      <ContextMenuTrigger className="h-full">{children}</ContextMenuTrigger>
       <ContextMenuContent className="bg-neutral-700 bg-clip-padding backdrop-filter flex flex-col backdrop-blur-xl bg-opacity-100 select-none text-neutral-100 border-gray-500 cursor-pointer">
         {/* TODO: Fix logic here */}
         {leftState ? (

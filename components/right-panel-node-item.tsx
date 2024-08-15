@@ -6,6 +6,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Folder } from "lucide-react";
 import React from "react";
+import { Skeleton } from "./ui/skeleton";
 
 type RightPanelNodeItemProps = {
   node: Node;
@@ -67,3 +68,7 @@ export default function RightPanelNodeItem({
     </li>
   );
 }
+
+export const RightPanelNodeItemSkeleton = () => {
+  return <Skeleton className="size-16 rounded-md bg-white/20" />;
+};
