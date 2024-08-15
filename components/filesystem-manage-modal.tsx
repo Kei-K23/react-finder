@@ -57,7 +57,7 @@ export default function FilesystemManageModal() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: node?.name || "",
+      name: "",
     },
   });
 
@@ -180,13 +180,9 @@ export default function FilesystemManageModal() {
       <DialogContent className="bg-neutral-700 bg-clip-padding backdrop-filter flex items-center flex-col backdrop-blur-xl bg-opacity-100 select-none text-neutral-100 border-gray-500">
         <DialogHeader>
           <DialogTitle>
-            {!node
-              ? type === FilesystemCreateType.FILE
-                ? "Create new file"
-                : "Create new folder"
-              : type === FilesystemCreateType.FILE
-              ? "Rename the file"
-              : "Rename the folder"}
+            {type === FilesystemCreateType.FILE
+              ? "Manage the file"
+              : "Manage the folder"}
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -211,7 +207,7 @@ export default function FilesystemManageModal() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Add</Button>
+            <Button type="submit">Save</Button>
           </form>
         </Form>
       </DialogContent>

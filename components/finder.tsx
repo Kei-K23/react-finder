@@ -36,18 +36,11 @@ export default function Finder({
 }: FinderProps) {
   const { nodes, currentSelectedNode, setCurrentSelectedNode, getNodes } =
     useFilesystemStore();
+  const [isLoading, setIsLoading] = useState(true);
 
   const [selectedNode, setSelectedNode] = useState<Node | null>(
     currentSelectedNode
   );
-  const [storageNodes, setStorageNodes] = useState<Node[]>([]);
-
-  useEffect(() => {
-    // TODO: Check to find better way to handle this state
-    // Update the current selected node value
-    setSelectedNode(currentSelectedNode);
-    setStorageNodes(nodes);
-  }, [getNodes, currentSelectedNode, nodes]);
 
   const { finderMinimizeState } = useFinderState();
 
@@ -90,6 +83,14 @@ export default function Finder({
     setSelectedNode(nextNode);
   };
 
+  useEffect(() => {
+    // TODO: Check to find better way to handle this state
+    // Update the current selected node value
+    setSelectedNode(currentSelectedNode);
+  }, [getNodes, currentSelectedNode]);
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
   return (
     <ResizablePanelGroup
       direction="horizontal"
@@ -97,7 +98,7 @@ export default function Finder({
     >
       <ResizablePanel defaultSize={20}>
         <LeftPanel
-          nodes={storageNodes}
+          nodes={nodes}
           handleNodeClick={handleNodeClick}
           handleMouseDown={handleMouseDown}
           mainLayoutRef={mainLayoutRef}
@@ -109,6 +110,7 @@ export default function Finder({
           selectedNode={selectedNode}
           backHistory={backHistory}
           forwardHistory={forwardHistory}
+          isLoading={isLoading}
         />
       </ResizablePanel>
       <ResizableHandle

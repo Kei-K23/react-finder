@@ -1,9 +1,7 @@
 import React, { useRef } from "react";
 import { Node } from "@/type";
 import RightPanelActionBar from "./right-panel-action-bar";
-import RightPanelNodeItem, {
-  RightPanelNodeItemSkeleton,
-} from "./right-panel-node-item";
+import RightPanelNodeItem from "./right-panel-node-item";
 import useWidthChange from "@/hooks/use-width-change";
 import { cn, reorderNodes } from "@/lib/utils";
 import FilesystemContextMenu from "./filesystem-context-menu";
@@ -105,7 +103,7 @@ export default function RightPanel({
   }
 
   return (
-    <div className="flex w-full h-full flex-col bg-neutral-800">
+    <div className="flex w-full h-full flex-col bg-neutral-800 select-none">
       <RightPanelActionBar
         handleMouseDown={handleMouseDown}
         selectedNode={selectedNode}

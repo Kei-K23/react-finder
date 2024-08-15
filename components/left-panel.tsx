@@ -38,6 +38,7 @@ type LeftPanelProps = {
   footerRef: React.MutableRefObject<HTMLDivElement | null>;
   setWidth: (width: number) => void;
   setHeight: (height: number) => void;
+  isLoading: boolean;
 };
 
 export default function LeftPanel({
@@ -53,6 +54,7 @@ export default function LeftPanel({
   setWidth,
   backHistory,
   forwardHistory,
+  isLoading,
 }: LeftPanelProps) {
   const { setTempRightClickState, setLeftState } =
     useRightClickFilesystemStore();
@@ -119,7 +121,7 @@ export default function LeftPanel({
               items={nodes}
               strategy={verticalListSortingStrategy}
             >
-              {nodes.length > 0
+              {!isLoading
                 ? nodes.map((node) => (
                     <FilesystemContextMenu key={node.name}>
                       <LeftPanelNodeItem
