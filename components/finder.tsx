@@ -40,12 +40,14 @@ export default function Finder({
   const [selectedNode, setSelectedNode] = useState<Node | null>(
     currentSelectedNode
   );
+  const [storageNodes, setStorageNodes] = useState<Node[]>([]);
 
   useEffect(() => {
     // TODO: Check to find better way to handle this state
     // Update the current selected node value
     setSelectedNode(currentSelectedNode);
-  }, [getNodes, currentSelectedNode]);
+    setStorageNodes(nodes);
+  }, [getNodes, currentSelectedNode, nodes]);
 
   const { finderMinimizeState } = useFinderState();
 
@@ -95,7 +97,7 @@ export default function Finder({
     >
       <ResizablePanel defaultSize={20}>
         <LeftPanel
-          nodes={nodes}
+          nodes={storageNodes}
           handleNodeClick={handleNodeClick}
           handleMouseDown={handleMouseDown}
           mainLayoutRef={mainLayoutRef}

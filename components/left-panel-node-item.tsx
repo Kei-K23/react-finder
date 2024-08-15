@@ -4,6 +4,7 @@ import { Node } from "@/type";
 import { useSortable } from "@dnd-kit/sortable";
 import React from "react";
 import { CSS } from "@dnd-kit/utilities";
+import { Skeleton } from "./ui/skeleton";
 
 type LeftPanelNodeItemProps = {
   node: Node;
@@ -54,3 +55,7 @@ export default function LeftPanelNodeItem({
     </li>
   );
 }
+
+export const LeftPanelNodeItemSkeleton = () => {
+  return <Skeleton className="w-full h-[25px] mb-2 rounded-md bg-white/20" />;
+};
